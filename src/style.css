@@ -21,7 +21,7 @@ body {
     "footer footer";
     grid-template-rows: 1fr 8fr 5vh;
     grid-template-columns: 1fr 4fr;
-    gap: 0.25rem 0.25rem;
+    gap: 4px;
     min-height: 105vh;
     min-width: 100vw;
     background-color: #4E878C;
@@ -37,10 +37,10 @@ main {
 
 footer, header {
     background-color: var(--dark-bg-color);
-}
-
-header {
-    grid-area: header;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    color: var(--mint-color);
 }
 
 aside {
@@ -113,7 +113,7 @@ button {
     background-color: var(--active-project-color);
 }
 
-.action-button:hover, .action-button:active {
+.action-button:hover, .action-button.active {
     background-color: var(--secondary-color);
 }
 
@@ -134,10 +134,7 @@ button {
 }
 
 header {
-    display: flex;
-    align-items: center;
-    color: var(--mint-color);
-    gap: 2rem;
+    grid-area: header;
 }
 
 header h1 {
@@ -158,11 +155,7 @@ footer .icon {
 }
 
 footer {
-    display: flex;
     justify-content: center;
-    align-items: center;
-    color: var(--mint-color);
     font-size: 1.2rem;
-    gap: 2rem;
     font-weight: 600;
 }
