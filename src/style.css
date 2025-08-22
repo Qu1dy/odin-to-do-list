@@ -2,7 +2,9 @@
     --sidebar-bg-color: #B5FFE1;
     --secondary-color: #93E5AB;
     --dark-bg-color: #00241B;
-    --active-project-color:  	hsl(138, 61%, 87%);
+    --active-project-color:hsl(138, 61%, 87%);
+    --mint-color: #65B891
+
 }
 
 * {
@@ -30,7 +32,7 @@ footer {
 }
 
 main {
-    background-color: #65B891;
+    background-color: var(--mint-color);
 }
 
 footer, header {
@@ -134,7 +136,7 @@ button {
 header {
     display: flex;
     align-items: center;
-    color: #65B891;
+    color: var(--mint-color);
     gap: 2rem;
 }
 
@@ -147,4 +149,20 @@ header img {
     width: auto;
     height: 3rem;
     margin-left: 1rem;
+}
+
+footer .icon {
+    margin-top: 0.3rem;
+    height: 1.5rem;
+    width: auto;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--mint-color);
+    font-size: 1.2rem;
+    gap: 2rem;
+    font-weight: 600;
 }
