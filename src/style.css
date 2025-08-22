@@ -1,0 +1,37 @@
+:root {
+    --sidebar-bg-color: #B5FFE1;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-areas: 
+    "header header"
+    "sidebar main" 
+    "footer footer";
+    grid-template-rows: 2fr 16fr 1fr;
+    grid-template-columns: 1fr 4fr;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+footer {
+    grid-area: footer;
+}
+
+header {
+    grid-area: header;
+}
+
+aside {
+    grid-area: sidebar;
+}
+
+main {
+    grid-area: main;
+}
