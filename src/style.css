@@ -8,6 +8,7 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -122,4 +123,22 @@ button {
 .project .options {
     margin-left: 2rem;
     height: 1.1rem;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    color: #65B891;
+    gap: 2rem;
+}
+
+header h1 {
+    font-size: 4rem;
+    font-family: "Indie Flower", cursive, sans-serif;
+}
+
+header img {
+    width: auto;
+    height: 3rem;
+    margin-left: 1rem;
 }
