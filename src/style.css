@@ -19,12 +19,18 @@ body {
     "footer footer";
     grid-template-rows: 1fr 8fr 5vh;
     grid-template-columns: 1fr 4fr;
+    gap: 0.25rem 0.25rem;
     min-height: 105vh;
     min-width: 100vw;
+    background-color: #4E878C;
 }
 
 footer {
     grid-area: footer;
+}
+
+main {
+    background-color: #65B891;
 }
 
 footer, header {
