@@ -104,8 +104,6 @@ section + .category-header {
 
 .action-button {
     height: 50px;
-    display: grid;
-    align-items: center;
     grid-template-columns: 1rem auto;
     gap: 2rem;
     font-size: 1.5rem;
@@ -131,6 +129,8 @@ button {
     cursor: pointer;
     background: none;
     border: none;
+    display: grid;
+    align-items: center;
 }
 
 .project:hover, .project.active {
@@ -186,7 +186,7 @@ footer, header h1 {
     font-family: "Indie Flower", cursive, sans-serif;
 }
 
-.action-button:last-child {
+.action-button:last-child, .task:last-child {
     margin-bottom: 2rem;
 }
 
@@ -197,6 +197,30 @@ footer, header h1 {
     font-size: 1.5rem;
 }
 
-.task-header, .task-header + hr {
+.task-header, .task-header + hr, .tasks {
     width: 800px;
+}
+
+.tasks {
+    padding-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.task {
+    display: grid;
+    grid-template-columns: 1rem auto 1rem 1rem 4rem 1.5rem;
+    gap: 1.2rem;
+    align-items: center;
+    font-size: 1.1rem;
+    background-color:#4E878C;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border-left: 5px solid yellow;
+}
+
+.task .icon {
+    height: 1.5rem;
+    width: auto;
 }
