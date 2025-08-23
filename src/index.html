@@ -19,10 +19,10 @@
     </header>
     <main>
         <h2 class="category-name"><img src="./assets/project-header.svg" alt="Project" class="icon">Project 1</h1>
-            <div class="task-header">
-                <h3>Tasks
         </h2>
-        <button><img class="icon" src="assets/new-task.svg" alt="Add new task"></button>
+        <div class="task-header">
+            <h3>Tasks</h3>
+            <button id="create-task"><img class="icon" src="assets/new-task.svg" alt="Add new task"></button>
         </div>
         <hr>
         <div class="tasks">
@@ -39,14 +39,6 @@
                 <p><label for="due-date">Due date:</label><input type="date" id="due-date" name="due_date" required></p>
                 <button>Add task</button>
             </form>
-            <div class="task">
-                <button><img src="assets/unchecked.svg" class="icon" alt="Unfinished task"></button>
-                <p>Lorem ipsum dolor sit amet</p>
-                <button><img src="assets/edit.svg" alt="Edit" class="icon"></button>
-                <button><img src="assets/delete.svg" alt="Delete" class="icon"></button>
-                <h4>05/11/25</h2>
-                    <button><img src="assets/expand-task.svg" alt="Expand" class="icon"></button>
-            </div>
         </div>
     </main>
     <aside>
@@ -60,10 +52,12 @@
         <h1 class="category-header">Projects</h1>
         <hr>
         <section>
-            <button class="project active"><img class="icon" src="assets/project.svg" alt="Project">Project 1<img
-                    class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
-            <button class="project"><img class="icon" src="assets/project.svg" alt="Project">Project 2<img
-                    class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
+            <div class="projects">
+                <button class="project active"><img class="icon" src="assets/project.svg" alt="Project">Project 1<img
+                        class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
+                <button class="project"><img class="icon" src="assets/project.svg" alt="Project">Project 2<img
+                        class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
+            </div>
             <button class="action-button"><img src="assets/add-project.svg" alt="Add new project">Create</button>
         </section>
     </aside>

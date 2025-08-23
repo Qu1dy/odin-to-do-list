@@ -221,7 +221,18 @@ button:focus {
     background-color:#4E878C;
     padding: 0.5rem;
     border-radius: 6px;
+}
+
+.task.medium {
     border-left: 5px solid yellow;
+}
+
+.task.high {
+    border-left: 5px solid red;
+}
+
+.task.low {
+    border-left: 5px solid greenyellow;
 }
 
 .task .icon {
@@ -249,7 +260,9 @@ button:focus {
     box-sizing: border-box;
 }
 
-
+textarea {
+    resize: none;
+}
 
 .to-do-form input, .to-do-form, .to-do-form textarea, .to-do-form select {
     font-size: 1.2rem;
