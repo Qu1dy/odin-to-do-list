@@ -40,7 +40,7 @@ main {
 }
 
 .category-name {
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-top: 1rem;
     display: flex;
     align-items: center;
@@ -197,6 +197,10 @@ footer, header h1 {
     font-size: 1.5rem;
 }
 
+button:focus {
+    outline: none;
+}
+
 .task-header, .task-header + hr, .tasks {
     width: 800px;
 }
@@ -223,4 +227,46 @@ footer, header h1 {
 .task .icon {
     height: 1.5rem;
     width: auto;
+}
+
+.to-do-form {
+    background-color: rgba(0,0,0,0.1);
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+.to-do-form p {
+    display: grid;
+    grid-template-columns: auto auto;   
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0.25rem 0;
+}
+
+.to-do-form p > *:nth-child(2) {
+    width: 400px;
+    box-sizing: border-box;
+}
+
+
+
+.to-do-form input, .to-do-form, .to-do-form textarea, .to-do-form select {
+    font-size: 1.2rem;
+}
+
+.to-do-form button {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+}
+
+.to-do-form input, .to-do-form textarea, .to-do-form select {
+    background: none;
+    border: 4px solid var(--mint-color);
+    outline: none;
+}
+
+.to-do-form button {
+    background-color: greenyellow;
+    padding: 0.25rem 2rem;
 }
