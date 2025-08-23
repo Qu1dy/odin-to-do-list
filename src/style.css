@@ -21,7 +21,7 @@ body {
     "footer footer";
     grid-template-rows: 1fr 8fr 5vh;
     grid-template-columns: 1fr 4fr;
-    gap: 4px;
+    gap: 4px 0px;
     min-height: 105vh;
     min-width: 100vw;
     background-color: #4E878C;
@@ -139,7 +139,6 @@ header {
 
 header h1 {
     font-size: 4rem;
-    font-family: "Indie Flower", cursive, sans-serif;
 }
 
 header img {
@@ -156,6 +155,14 @@ footer .icon {
 
 footer {
     justify-content: center;
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+footer, header h1 {
+    font-family: "Indie Flower", cursive, sans-serif;
+}
+
+.action-button:last-child {
+    margin-bottom: 2rem;
 }
