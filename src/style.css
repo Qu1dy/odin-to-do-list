@@ -33,7 +33,25 @@ footer {
 
 main {
     background-color: var(--mint-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
 }
+
+.category-name {
+    font-size: 2.5rem;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.category-name .icon {
+    height: 3rem;
+    width: auto;
+}
+
 
 footer, header {
     background-color: var(--dark-bg-color);
@@ -58,6 +76,12 @@ aside {
     margin-top: 0.5rem;
 }
 
+hr {
+    height: 3px;
+    background-color: black;
+    border: none;
+}
+
 .category-header + hr, section button {
     width: 200px;
 }
@@ -78,10 +102,6 @@ section + .category-header {
     margin-top: 4rem;
 }
 
-section button {
-    background: none;
-}
-
 .action-button {
     height: 50px;
     display: grid;
@@ -96,17 +116,21 @@ section button {
 }
 
 .project {
-    display: flex;
-    gap: 0.5rem;
+    display: grid;
+    gap: 0.1rem;
+    grid-template-columns: 2rem auto 1.5rem;
     align-items: center;
-    border: none;
     font-size: 1.2rem;
     font-weight: 525;
     height: 36px;
+    text-align: left;
+    border-radius: 8px;
 }
 
 button {
     cursor: pointer;
+    background: none;
+    border: none;
 }
 
 .project:hover, .project.active {
@@ -129,7 +153,6 @@ button {
 }
 
 .project .options {
-    margin-left: 2rem;
     height: 1.1rem;
 }
 
@@ -147,7 +170,7 @@ header img {
     margin-left: 1rem;
 }
 
-footer .icon {
+footer .icon, .task-header .icon {
     margin-top: 0.3rem;
     height: 1.5rem;
     width: auto;
@@ -165,4 +188,15 @@ footer, header h1 {
 
 .action-button:last-child {
     margin-bottom: 2rem;
+}
+
+.task-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.5rem;
+}
+
+.task-header, .task-header + hr {
+    width: 800px;
 }
