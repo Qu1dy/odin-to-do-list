@@ -57,14 +57,18 @@ const renderer = (() => {
         taskEL.classList.add(priority);
 
         const taskStatus = completed ? _buttonElement(taskDoneIcon, "Done") : _buttonElement(taskUndoneIcon, "Undone");
+        taskStatus.setAttribute("id", "state");
 
-        const titleEL = document.createElement("p");
+        const titleEL = document.createElement("h3");
         titleEL.textContent = title;
+        if(completed) {
+            titleEL.classList.add("strikethrough");
+        }
 
         const editButtonEL = _buttonElement(editIcon, "Edit");
         const deleteButtonEL = _buttonElement(deleteIcon, "Delete");
         deleteButtonEL.setAttribute("id", "delete");
-        const dateEL = document.createElement("h5");
+        const dateEL = document.createElement("h4");
         dateEL.textContent = dueDate.replaceAll("-", "/");
 
         const expandButtonEL = _buttonElement(expandIcon, "Expand")

@@ -48,6 +48,10 @@ class Project {
     removeTask(taskId) {
         removeFromArray(taskId, this.tasks);
     }
+
+    getTask(taskId) {
+        return this.tasks.find(task => task.id === taskId);
+    }
 }
 
 class Task {

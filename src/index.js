@@ -46,6 +46,21 @@ const main = (() => {
         _addDeleteTaskEvent();
     };
 
+    const _onTaskChangeState = (stateButton) => {
+        const taskId = stateButton.parentElement.dataset.id;
+        const task = ProjectManager.getActiveProject().getTask(taskId);
+        task.changeState();
+        renderer.renderProject(ProjectManager.getActiveProject());
+        _addChangeTaskStateEvent();
+    };
+
+    const _addChangeTaskStateEvent = () => {
+        const stateButtons = document.querySelectorAll("#state");
+        stateButtons.forEach(stateButton => {
+            stateButton.addEventListener("click", () => _onTaskChangeState(stateButton));
+        });
+    };
+
     const _addDeleteTaskEvent = () => {
         const deleteButtons = document.querySelectorAll("#delete");
         deleteButtons.forEach(deleteButton => {
@@ -62,6 +77,7 @@ const main = (() => {
         activeProject.addTask(task);
         renderer.renderProject(activeProject);
         _addDeleteTaskEvent();
+        _addChangeTaskStateEvent();
         taskForm.reset();
     };
 
