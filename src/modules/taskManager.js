@@ -34,6 +34,10 @@ class Task {
         this.completed = false;
         this.id = crypto.randomUUID();
     }
+
+    changeState = () => {
+        this.completed = !this.completed;
+    }
 }
 
 export {Task, Project};

@@ -18,15 +18,18 @@
         <h1>To Do</h1>
     </header>
     <main>
-        <h2 class="category-name"><img src="./assets/project-header.svg" alt="Project" class="icon">Project 1</h1>
+        <div class="category-header">
+            <img src="./assets/project-header.svg" alt="Project" class="icon">
+            <h2 class="category-name">Project 1</h2>
+        </div>
         </h2>
         <div class="task-header">
             <h3>Tasks</h3>
             <button id="create-task"><img class="icon" src="assets/new-task.svg" alt="Add new task"></button>
         </div>
         <hr>
-        <div class="tasks">
-            <form class="to-do-form" shown>
+        <ul class="tasks">
+            <form class="to-do-form" hidden>
                 <p><label for="title">Title:</label><input type="text" id="title" placeholder="What to do?" name="title"
                         required></p>
                 <p><label for="description">Description: (optional)</label><textarea id="description" rows="2" cols="33"
@@ -39,7 +42,7 @@
                 <p><label for="due-date">Due date:</label><input type="date" id="due-date" name="due_date" required></p>
                 <button>Add task</button>
             </form>
-        </div>
+            </div>
     </main>
     <aside>
         <h1 class="category-header">Home</h1>
@@ -52,12 +55,16 @@
         <h1 class="category-header">Projects</h1>
         <hr>
         <section>
-            <div class="projects">
-                <button class="project active"><img class="icon" src="assets/project.svg" alt="Project">Project 1<img
-                        class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
-                <button class="project"><img class="icon" src="assets/project.svg" alt="Project">Project 2<img
-                        class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
-            </div>
+            <ul class="projects">
+                <li>
+                    <button class="project"><img class="icon" src="assets/project.svg" alt="Project">Project 1<img
+                            class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
+                </li>
+                <li>
+                    <button class="project"><img class="icon" src="assets/project.svg" alt="Project">Project 2<img
+                            class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
+                </li>
+            </ul>
             <button class="action-button"><img src="assets/add-project.svg" alt="Add new project">Create</button>
         </section>
     </aside>

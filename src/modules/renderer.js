@@ -6,14 +6,14 @@ import expandIcon from "../assets/expand-task.svg";
 import shrinkIcon from "../assets/shrink-task.svg";
 import taskDoneIcon from "../assets/checked.svg";
 import taskUndoneIcon from "../assets/unchecked.svg";
-import { isMatch } from "date-fns";
 
 const renderer = (() => {
-    let projectsElement, TasksElement;
+    let projectsElement, TasksElement, categoryHeaderElement, activeCategory;
 
     const _cacheDom = () => {
         projectsElement = document.querySelector(".projects");
         TasksElement = document.querySelector(".tasks");
+        categoryHeaderElement = document.querySelector(".category-name");
     }
 
     const _createProjectElement = (name) => {
@@ -34,9 +34,13 @@ const renderer = (() => {
         return projectEL;
     }
 
-    const _buttonElement = (imgSrc,alt=null) => {
+    const _renderCategoryHeader = (project) => {
+        categoryHeaderElement.textContent = project.name; 
+    }
+
+    const _buttonElement = (imgSrc, alt = null) => {
         const buttonEL = document.createElement("button");
-    
+
         const img = document.createElement("img");
         img.src = imgSrc;
         img.alt = alt;
@@ -45,8 +49,8 @@ const renderer = (() => {
         return buttonEL;
     }
 
-    const _createTaskElement = ({title, priority, dueDate, completed}) => {
-        const taskEL = document.createElement("div");
+    const _createTaskElement = ({ title, priority, dueDate, completed }) => {
+        const taskEL = document.createElement("li");
         taskEL.classList.add("task");
         taskEL.classList.add(priority);
 
@@ -66,21 +70,34 @@ const renderer = (() => {
         return taskEL;
     };
 
-
-
     const renderProjects = (projects) => {
         projects.forEach(project => {
-            _renderProject(project);
+            _renderProjectInSidebar(project);
         });
     };
 
-    const _renderProject = (project) => {
+    const _renderProjectInSidebar = (project) => {
         const projectEL = _createProjectElement(project.name);
+        projectEL.dataset.id = project.id;
         projectsElement.append(projectEL);
+    };
+
+    const renderProject = (project) => {
+        _renderCategoryHeader(project);
+        _renderProjectTasks(project);
+    }
+
+    const _renderProjectTasks = (project) => {
+        const projectElement = Array.from(projectsElement.children).find(projectEL => projectEL.dataset.id === project.id);
+        if(activeCategory) {
+            activeCategory.classList.toggle("active");
+        }
+        activeCategory = projectElement;
+        activeCategory.classList.toggle("active");
         project.tasks.forEach(task => {
             _renderTask(task);
         });
-    };
+    }
 
     const _renderTask = (task) => {
         const taskEL = _createTaskElement(task);
@@ -89,7 +106,7 @@ const renderer = (() => {
 
     _cacheDom();
 
-    return { renderProjects };
+    return { renderProjects, renderProject};
 })();
 
 export default renderer;
