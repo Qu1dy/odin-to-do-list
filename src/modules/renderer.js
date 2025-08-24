@@ -95,6 +95,8 @@ const renderer = (() => {
         }
         activeCategory = projectElement;
         activeCategory.classList.toggle("active");
+        
+        TasksElement.innerHTML = "";
         project.tasks.forEach(task => {
             _renderTask(task);
         });

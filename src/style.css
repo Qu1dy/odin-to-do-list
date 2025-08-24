@@ -204,7 +204,7 @@ button:focus {
     outline: none;
 }
 
-.task-header, .task-header + hr, .tasks {
+.task-header, .task-header + hr, .tasks, .to-do-form {
     width: 800px;
 }
 
