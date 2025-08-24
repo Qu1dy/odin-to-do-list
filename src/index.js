@@ -7,11 +7,11 @@ const main = (() => {
 
     const init = () => {
         _cacheDom();
-        _handleEvents();
+        _handleTaskFormEvents();
         if (ProjectManager.getProjects().length === 0) {
             _addTemplateProject();
         }
-    }
+    };
 
     const _cacheDom = () => {
         taskForm = document.querySelector(".to-do-form");
@@ -27,13 +27,26 @@ const main = (() => {
         }
     };
 
+    const _removeTask = (id) => {
+        ProjectManager.getActiveProject().removeTask(id);
+    };
+
     const _addTemplateProject = () => {
         const templateProject = new Project("Project 1");
         ProjectManager.addProject(templateProject);
         ProjectManager.setActiveProject(templateProject);
         renderer.renderProjects(ProjectManager.getProjects());
         renderer.renderProject(templateProject);
-    }
+    };
+
+    const _addDeleteTaskEvent = () => {
+        const deleteButton = document.querySelector(".task:last-child #delete");
+        deleteButton.addEventListener("click", () => {
+            const taskId = deleteButton.parentElement.dataset.id;
+            _removeTask(taskId);
+            renderer.renderProject(ProjectManager.getActiveProject());
+        });
+    };
 
     const _onFormSubmit = (e) => {
         _toggleTaskForm();
@@ -43,10 +56,11 @@ const main = (() => {
         const activeProject = ProjectManager.getActiveProject();
         activeProject.addTask(task);
         renderer.renderProject(activeProject);
+        _addDeleteTaskEvent();
         taskForm.reset();
     };
 
-    const _handleEvents = () => {
+    const _handleTaskFormEvents = () => {
         createTaskButton.addEventListener("click", _toggleTaskForm);
         taskForm.addEventListener("submit", (e) => {
             e.preventDefault();

@@ -63,6 +63,7 @@ const renderer = (() => {
 
         const editButtonEL = _buttonElement(editIcon, "Edit");
         const deleteButtonEL = _buttonElement(deleteIcon, "Delete");
+        deleteButtonEL.setAttribute("id", "delete");
         const dateEL = document.createElement("h5");
         dateEL.textContent = dueDate.replaceAll("-", "/");
 

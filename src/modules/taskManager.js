@@ -1,4 +1,12 @@
-const ProjectManager = (() => { 
+const removeFromArray = (id, arr) => {
+    const item = arr.find(
+        item => item.id === id
+    );
+    const index = arr.indexOf(item);
+    arr.splice(index, 1);
+}
+
+const ProjectManager = (() => {
     const projects = [];
     let activeProject = null;
 
@@ -10,6 +18,10 @@ const ProjectManager = (() => {
         projects.push(project);
     };
 
+    const removeProject = (projectId) => {
+        removeFromArray(projectId, projects);
+    }
+
     const getActiveProject = () => {
         return activeProject;
     };
@@ -18,7 +30,7 @@ const ProjectManager = (() => {
         activeProject = project;
     };
 
-    return {getProjects, addProject, getActiveProject, setActiveProject};
+    return { getProjects, removeProject, addProject, getActiveProject, setActiveProject };
 
 })();
 
@@ -34,16 +46,12 @@ class Project {
     }
 
     removeTask(taskId) {
-        const task = this.tasks.find(
-            task => task.id === taskId
-        );
-        const index = this.tasks.indexOf(task);
-        this.tasks.slice(index, 1);
+        removeFromArray(taskId, this.tasks);
     }
 }
 
 class Task {
-    constructor({title, description, priority, dueDate}) {
+    constructor({ title, description, priority, dueDate }) {
         this.title = title;
         this.description = description;
         this.priority = priority;
