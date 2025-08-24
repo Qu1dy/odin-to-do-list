@@ -39,12 +39,17 @@ const main = (() => {
         renderer.renderProject(templateProject);
     };
 
+    const _onTaskDelete = (deleteButton) => {
+        const taskId = deleteButton.parentElement.dataset.id;
+        _removeTask(taskId);
+        renderer.renderProject(ProjectManager.getActiveProject());
+        _addDeleteTaskEvent();
+    };
+
     const _addDeleteTaskEvent = () => {
-        const deleteButton = document.querySelector(".task:last-child #delete");
-        deleteButton.addEventListener("click", () => {
-            const taskId = deleteButton.parentElement.dataset.id;
-            _removeTask(taskId);
-            renderer.renderProject(ProjectManager.getActiveProject());
+        const deleteButtons = document.querySelectorAll("#delete");
+        deleteButtons.forEach(deleteButton => {
+            deleteButton.addEventListener("click", () => _onTaskDelete(deleteButton));
         });
     };
 
