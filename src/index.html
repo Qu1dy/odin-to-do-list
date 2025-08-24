@@ -29,17 +29,17 @@
         </div>
         <hr>
         <ul class="tasks">
-            <form class="to-do-form" hidden>
+            <form class="to-do-form">
                 <p><label for="title">Title:</label><input type="text" id="title" placeholder="What to do?" name="title"
                         required></p>
-                <p><label for="description">Description: (optional)</label><textarea id="description" rows="2" cols="33"
+                <p><label for="description">Description: (optional)</label><textarea id="description" rows="2" cols="33" name="description"
                         placeholder="Give your task a description..."></textarea></p>
                 <p><label for="priority">Priority:</label><select name="priority" id="priority">
                         <option value="high">High</option>
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
                     </select></p>
-                <p><label for="due-date">Due date:</label><input type="date" id="due-date" name="due_date" required></p>
+                <p><label for="due-date">Due date:</label><input type="date" id="due-date" name="dueDate" required></p>
                 <button>Add task</button>
             </form>
             </div>
@@ -56,14 +56,6 @@
         <hr>
         <section>
             <ul class="projects">
-                <li>
-                    <button class="project"><img class="icon" src="assets/project.svg" alt="Project">Project 1<img
-                            class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
-                </li>
-                <li>
-                    <button class="project"><img class="icon" src="assets/project.svg" alt="Project">Project 2<img
-                            class="options" src="assets/hamburger-menu.svg" alt="Project options"></button>
-                </li>
             </ul>
             <button class="action-button"><img src="assets/add-project.svg" alt="Add new project">Create</button>
         </section>

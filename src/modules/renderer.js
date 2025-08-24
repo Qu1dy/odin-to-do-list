@@ -16,8 +16,9 @@ const renderer = (() => {
         categoryHeaderElement = document.querySelector(".category-name");
     }
 
-    const _createProjectElement = (name) => {
+    const _createProjectElement = ({name, id}) => {
         const projectEL = document.createElement("button");
+        projectEL.dataset.id = id;
         projectEL.classList.add("project");
 
         const iconImg = document.createElement("img");
@@ -49,8 +50,9 @@ const renderer = (() => {
         return buttonEL;
     }
 
-    const _createTaskElement = ({ title, priority, dueDate, completed }) => {
+    const _createTaskElement = ({ title, priority, dueDate, completed, id}) => {
         const taskEL = document.createElement("li");
+        taskEL.dataset.id = id;
         taskEL.classList.add("task");
         taskEL.classList.add(priority);
 
@@ -62,7 +64,7 @@ const renderer = (() => {
         const editButtonEL = _buttonElement(editIcon, "Edit");
         const deleteButtonEL = _buttonElement(deleteIcon, "Delete");
         const dateEL = document.createElement("h5");
-        dateEL.textContent = dueDate;
+        dateEL.textContent = dueDate.replaceAll("-", "/");
 
         const expandButtonEL = _buttonElement(expandIcon, "Expand")
 
@@ -77,8 +79,7 @@ const renderer = (() => {
     };
 
     const _renderProjectInSidebar = (project) => {
-        const projectEL = _createProjectElement(project.name);
-        projectEL.dataset.id = project.id;
+        const projectEL = _createProjectElement(project);
         projectsElement.append(projectEL);
     };
 

@@ -1,19 +1,36 @@
-const projects = [];
+const ProjectManager = (() => { 
+    const projects = [];
+    let activeProject = null;
+
+    const getProjects = () => {
+        return projects;
+    };
+
+    const addProject = (project) => {
+        projects.push(project);
+    };
+
+    const getActiveProject = () => {
+        return activeProject;
+    };
+
+    const setActiveProject = (project) => {
+        activeProject = project;
+    };
+
+    return {getProjects, addProject, getActiveProject, setActiveProject};
+
+})();
 
 class Project {
     constructor(name) {
         this.name = name;
         this.id = crypto.randomUUID();
         this.tasks = [];
-        projects.push(this);
     }
 
     addTask(task) {
         this.tasks.push(task);
-    }
-
-    static getProjects() {
-        return projects;
     }
 
     removeTask(taskId) {
@@ -26,7 +43,7 @@ class Project {
 }
 
 class Task {
-    constructor(title, description, priority, dueDate) {
+    constructor({title, description, priority, dueDate}) {
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -40,4 +57,4 @@ class Task {
     }
 }
 
-export {Task, Project};
+export { Task, Project, ProjectManager };
