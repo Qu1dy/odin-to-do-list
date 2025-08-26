@@ -11,7 +11,7 @@ const main = (() => {
         if (ProjectManager.getProjects().length === 0) {
             _addTemplateProject();
         }
-        _handleEvents();
+        _renderWithEvents();
     };
 
     const _cacheDom = () => {
@@ -22,6 +22,11 @@ const main = (() => {
     const _removeTask = (id) => {
         ProjectManager.getActiveProject().removeTask(id);
     };
+
+    const _renderWithEvents = () => {
+        renderer.renderProject(ProjectManager.getActiveProject());
+        _handleEvents();
+    }
 
     const _addTemplateProject = () => {
         const templateProject = new Project("Project 1");
@@ -35,14 +40,12 @@ const main = (() => {
             dueDate: "2025/07/05"
         });
         templateProject.addTask(task);
-        renderer.renderProject(templateProject);
     };
 
     const _onTaskDelete = (deleteButton) => {
         const taskId = deleteButton.parentElement.dataset.id;
         _removeTask(taskId);
-        renderer.renderProject(ProjectManager.getActiveProject());
-        _addDeleteTaskEvent();
+        _renderWithEvents();
     };
 
     const _getTask = (button) => {
@@ -54,8 +57,7 @@ const main = (() => {
     const _onTaskChangeState = (stateButton) => {
         const task = _getTask(stateButton);
         task.changeState();
-        renderer.renderProject(ProjectManager.getActiveProject());
-        _addChangeTaskStateEvent();
+        _renderWithEvents();
     };
 
     const _addChangeTaskStateEvent = () => {
@@ -85,9 +87,8 @@ const main = (() => {
             const task = new Task(dataJSON);
             activeProject.addTask(task);
         }
-        renderer.renderProject(activeProject);
-        _handleEvents();
         taskForm.reset();
+        _renderWithEvents();
     };
 
     const _handleEvents = () => {
@@ -125,6 +126,7 @@ const main = (() => {
             const input = child.children[1];
             input.value = task[input.id].replaceAll("/", "-");
         }
+        _renderWithEvents();
     };
 
     return { init };

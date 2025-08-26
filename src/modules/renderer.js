@@ -23,10 +23,10 @@ const renderer = (() => {
 
     const renderTaskForm = (index=null) => {
         taskForm.style.display = "block";
-        console.log("aaaaaa");
         if(index===null) {
             delete taskForm.dataset
             taskForm.reset();
+            TasksElement.insertBefore(taskForm, TasksElement.firstChild);
             return; 
         }
         const taskToReplace = TasksElement.children[index];
