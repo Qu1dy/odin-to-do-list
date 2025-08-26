@@ -8,15 +8,32 @@ import taskDoneIcon from "../assets/checked.svg";
 import taskUndoneIcon from "../assets/unchecked.svg";
 
 const renderer = (() => {
-    let projectsElement, TasksElement, categoryHeaderElement, activeCategory;
+    let projectsElement, TasksElement, categoryHeaderElement, activeCategory, taskForm;
 
     const _cacheDom = () => {
         projectsElement = document.querySelector(".projects");
         TasksElement = document.querySelector(".tasks");
         categoryHeaderElement = document.querySelector(".category-name");
+        taskForm = document.querySelector(".to-do-form");
     }
 
-    const _createProjectElement = ({name, id}) => {
+    const hideTaskForm = () => {
+        taskForm.style.display = "none";
+    }
+
+    const renderTaskForm = (index=null) => {
+        taskForm.style.display = "block";
+        console.log("aaaaaa");
+        if(index===null) {
+            delete taskForm.dataset
+            taskForm.reset();
+            return; 
+        }
+        const taskToReplace = TasksElement.children[index];
+        TasksElement.replaceChild(taskForm, taskToReplace);
+    };
+
+    const _createProjectElement = ({ name, id }) => {
         const projectEL = document.createElement("button");
         projectEL.dataset.id = id;
         projectEL.classList.add("project");
@@ -36,7 +53,7 @@ const renderer = (() => {
     }
 
     const _renderCategoryHeader = (project) => {
-        categoryHeaderElement.textContent = project.name; 
+        categoryHeaderElement.textContent = project.name;
     }
 
     const _buttonElement = (imgSrc, alt = null) => {
@@ -50,7 +67,7 @@ const renderer = (() => {
         return buttonEL;
     }
 
-    const _createTaskElement = ({ title, priority, dueDate, completed, id}) => {
+    const _createTaskElement = ({ title, priority, dueDate, completed, id }) => {
         const taskEL = document.createElement("li");
         taskEL.dataset.id = id;
         taskEL.classList.add("task");
@@ -61,7 +78,7 @@ const renderer = (() => {
 
         const titleEL = document.createElement("h3");
         titleEL.textContent = title;
-        if(completed) {
+        if (completed) {
             titleEL.classList.add("strikethrough");
         }
 
@@ -96,14 +113,14 @@ const renderer = (() => {
 
     const _renderProjectTasks = (project) => {
         const projectElement = Array.from(projectsElement.children).find(projectEL => projectEL.dataset.id === project.id);
-        if(activeCategory) {
+        if (activeCategory) {
             activeCategory.classList.toggle("active");
         }
         activeCategory = projectElement;
         activeCategory.classList.toggle("active");
-        
+
         TasksElement.innerHTML = "";
-        project.tasks.forEach(task => {
+        project.getTasks().forEach(task => {
             _renderTask(task);
         });
     }
@@ -115,7 +132,7 @@ const renderer = (() => {
 
     _cacheDom();
 
-    return { renderProjects, renderProject};
+    return { renderProjects, renderProject, renderTaskForm, hideTaskForm };
 })();
 
 export default renderer;

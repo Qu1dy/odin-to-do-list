@@ -1,10 +1,9 @@
 import "./style.css";
 import renderer from "./modules/renderer.js";
 import { Task, Project, ProjectManager } from "./modules/taskManager.js";
-import { parse } from 'date-fns';
 
 const main = (() => {
-    let taskForm, createTaskButton;
+    let createTaskButton, taskForm;
 
     const init = () => {
         _cacheDom();
@@ -16,17 +15,8 @@ const main = (() => {
     };
 
     const _cacheDom = () => {
-        taskForm = document.querySelector(".to-do-form");
         createTaskButton = document.querySelector("#create-task");
-    };
-
-    const _toggleTaskForm = () => {
-        if (taskForm.style.display !== "block") {
-            taskForm.style.display = "block";
-        }
-        else {
-            taskForm.style.display = "none";
-        }
+        taskForm = document.querySelector(".to-do-form");
     };
 
     const _removeTask = (id) => {
@@ -83,18 +73,17 @@ const main = (() => {
     };
 
     const _onFormSubmit = (e) => {
-        _toggleTaskForm();
+        renderer.hideTaskForm();
         const formData = new FormData(taskForm);
         const dataJSON = Object.fromEntries(formData.entries());
         const activeProject = ProjectManager.getActiveProject();
-
         const taskId = taskForm.dataset.taskId;
-        if (taskId === null) {
-            const task = new Task(dataJSON);
-            activeProject.addTask(task);
+        if (taskId) {
+            activeProject.editTask(taskId, dataJSON);
         }
         else {
-            activeProject.editTask(taskId, dataJSON);
+            const task = new Task(dataJSON);
+            activeProject.addTask(task);
         }
         renderer.renderProject(activeProject);
         _handleEvents();
@@ -108,7 +97,8 @@ const main = (() => {
     };
 
     const _handleTaskFormEvents = () => {
-        createTaskButton.addEventListener("click", _toggleTaskForm);
+        createTaskButton.addEventListener("click", () => renderer.renderTaskForm());
+
         taskForm.addEventListener("submit", (e) => {
             e.preventDefault();
             _onFormSubmit(e);
@@ -123,12 +113,16 @@ const main = (() => {
     };
 
     const _onTaskEdit = (editButton) => {
-        _toggleTaskForm();
         const task = _getTask(editButton);
+        const index = ProjectManager.getActiveProject().getTasks().indexOf(task);
+        renderer.renderTaskForm(index);
         taskForm.dataset.taskId = task.id;
-        for (const p of taskForm.children) {
-            if (p.tagName !== "P") return;
-            const input = p.children[1];
+        for (const child of taskForm.children) {
+            if (child.tagName !== "P") {
+                child.textContent = "Apply changes";
+                return;
+            };
+            const input = child.children[1];
             input.value = task[input.id].replaceAll("/", "-");
         }
     };

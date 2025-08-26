@@ -35,25 +35,31 @@ const ProjectManager = (() => {
 })();
 
 class Project {
+    #tasks;
+
     constructor(name) {
         this.name = name;
         this.id = crypto.randomUUID();
-        this.tasks = [];
+        this.#tasks = [];
     }
 
     addTask(task) {
-        this.tasks.push(task);
+        this.#tasks.push(task);
+    }
+
+    getTasks() {
+        return this.#tasks;
     }
 
     removeTask(taskId) {
-        removeFromArray(taskId, this.tasks);
+        removeFromArray(taskId, this.#tasks);
     }
 
     getTask(taskId) {
-        return this.tasks.find(task => task.id === taskId);
+        return this.#tasks.find(task => task.id === taskId);
     }
 
-    editTask(taskId, {title, description, priority, dueDate, completed}) {
+    editTask(taskId, {title, description, priority, dueDate}) {
         const task = this.getTask(taskId)
         task.title = title;
         task.description = description;
