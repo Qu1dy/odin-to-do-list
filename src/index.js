@@ -1,6 +1,7 @@
 import "./style.css";
 import renderer from "./modules/renderer.js";
 import { Task, Project, ProjectManager } from "./modules/taskManager.js";
+import { parse } from 'date-fns';
 
 const main = (() => {
     let taskForm, createTaskButton;
@@ -11,6 +12,7 @@ const main = (() => {
         if (ProjectManager.getProjects().length === 0) {
             _addTemplateProject();
         }
+        _handleEvents();
     };
 
     const _cacheDom = () => {
@@ -36,6 +38,13 @@ const main = (() => {
         ProjectManager.addProject(templateProject);
         ProjectManager.setActiveProject(templateProject);
         renderer.renderProjects(ProjectManager.getProjects());
+        const task = new Task({
+            title: "meow",
+            description: "meow meow",
+            priority: "high",
+            dueDate: "2025/07/05"
+        });
+        templateProject.addTask(task);
         renderer.renderProject(templateProject);
     };
 
@@ -46,9 +55,14 @@ const main = (() => {
         _addDeleteTaskEvent();
     };
 
-    const _onTaskChangeState = (stateButton) => {
-        const taskId = stateButton.parentElement.dataset.id;
+    const _getTask = (button) => {
+        const taskId = button.parentElement.dataset.id;
         const task = ProjectManager.getActiveProject().getTask(taskId);
+        return task;
+    }
+
+    const _onTaskChangeState = (stateButton) => {
+        const task = _getTask(stateButton);
         task.changeState();
         renderer.renderProject(ProjectManager.getActiveProject());
         _addChangeTaskStateEvent();
@@ -72,13 +86,25 @@ const main = (() => {
         _toggleTaskForm();
         const formData = new FormData(taskForm);
         const dataJSON = Object.fromEntries(formData.entries());
-        const task = new Task(dataJSON);
         const activeProject = ProjectManager.getActiveProject();
-        activeProject.addTask(task);
+
+        const taskId = taskForm.dataset.taskId;
+        if (taskId === null) {
+            const task = new Task(dataJSON);
+            activeProject.addTask(task);
+        }
+        else {
+            activeProject.editTask(taskId, dataJSON);
+        }
         renderer.renderProject(activeProject);
+        _handleEvents();
+        taskForm.reset();
+    };
+
+    const _handleEvents = () => {
         _addDeleteTaskEvent();
         _addChangeTaskStateEvent();
-        taskForm.reset();
+        _addEditTaskEvent();
     };
 
     const _handleTaskFormEvents = () => {
@@ -87,6 +113,24 @@ const main = (() => {
             e.preventDefault();
             _onFormSubmit(e);
         });
+    };
+
+    const _addEditTaskEvent = () => {
+        const editButtons = document.querySelectorAll("#edit");
+        editButtons.forEach(editButton => {
+            editButton.addEventListener("click", () => _onTaskEdit(editButton));
+        });
+    };
+
+    const _onTaskEdit = (editButton) => {
+        _toggleTaskForm();
+        const task = _getTask(editButton);
+        taskForm.dataset.taskId = task.id;
+        for (const p of taskForm.children) {
+            if (p.tagName !== "P") return;
+            const input = p.children[1];
+            input.value = task[input.id].replaceAll("/", "-");
+        }
     };
 
     return { init };

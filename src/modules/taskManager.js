@@ -52,6 +52,14 @@ class Project {
     getTask(taskId) {
         return this.tasks.find(task => task.id === taskId);
     }
+
+    editTask(taskId, {title, description, priority, dueDate, completed}) {
+        const task = this.getTask(taskId)
+        task.title = title;
+        task.description = description;
+        task.priority = priority;
+        task.dueDate = dueDate;
+    }
 }
 
 class Task {

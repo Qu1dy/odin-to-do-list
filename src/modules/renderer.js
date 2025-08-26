@@ -66,6 +66,7 @@ const renderer = (() => {
         }
 
         const editButtonEL = _buttonElement(editIcon, "Edit");
+        editButtonEL.setAttribute("id", "edit");
         const deleteButtonEL = _buttonElement(deleteIcon, "Delete");
         deleteButtonEL.setAttribute("id", "delete");
         const dateEL = document.createElement("h4");
