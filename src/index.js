@@ -116,17 +116,7 @@ const main = (() => {
     const _onTaskEdit = (editButton) => {
         const task = _getTask(editButton);
         const index = ProjectManager.getActiveProject().getTasks().indexOf(task);
-        renderer.renderTaskForm(index);
-        taskForm.dataset.taskId = task.id;
-        for (const child of taskForm.children) {
-            if (child.tagName !== "P") {
-                child.textContent = "Apply changes";
-                return;
-            };
-            const input = child.children[1];
-            input.value = task[input.id].replaceAll("/", "-");
-        }
-        _renderWithEvents();
+        renderer.renderTaskForm(index, task);
     };
 
     return { init };

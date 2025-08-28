@@ -220,9 +220,12 @@ button:focus {
     grid-template-columns: 1rem auto 1rem 1rem 4.5rem 1.5rem;
     gap: 1.2rem;
     align-items: center;
-    background-color:#4E878C;
     padding: 0.5rem;
     border-radius: 6px;
+}
+
+.task, .expanded-task {
+    background-color:#4E878C;
 }
 
 .task.medium {
@@ -295,3 +298,4 @@ ul {
     text-decoration: line-through;
     text-decoration-thickness: 3px;
 }
+

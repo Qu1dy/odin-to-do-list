@@ -8,28 +8,42 @@ import taskDoneIcon from "../assets/checked.svg";
 import taskUndoneIcon from "../assets/unchecked.svg";
 
 const renderer = (() => {
-    let projectsElement, TasksElement, categoryHeaderElement, activeCategory, taskForm;
+    let projectsElement, TasksElement, categoryHeaderElement, activeCategory, taskForm, formButton;
 
     const _cacheDom = () => {
         projectsElement = document.querySelector(".projects");
         TasksElement = document.querySelector(".tasks");
         categoryHeaderElement = document.querySelector(".category-name");
         taskForm = document.querySelector(".to-do-form");
+        formButton = taskForm.querySelector("button");
     }
 
     const hideTaskForm = () => {
         taskForm.style.display = "none";
     }
 
-    const renderTaskForm = (index=null) => {
+    const renderTaskForm = (index = null, task=null) => {
+        const _changeButtonText = (newText) => {
+            formButton.textContent = newText;
+        };
+        
         taskForm.style.display = "block";
-        if(index===null) {
-            delete taskForm.dataset
+        if (index === null || task === null) {
+            delete taskForm.dataset;
             taskForm.reset();
+            _changeButtonText("Add task");
             TasksElement.insertBefore(taskForm, TasksElement.firstChild);
-            return; 
+            return;
         }
+
         const taskToReplace = TasksElement.children[index];
+        taskForm.dataset.taskId = task.id;
+        _changeButtonText("Apply changes");
+        for (const child of Array.from(taskForm.children).filter(child => child.tagName === "P")) {
+            const input = child.children[1];
+            input.value = task[input.id].replaceAll("/", "-");
+        }
+        
         TasksElement.replaceChild(taskForm, taskToReplace);
     };
 
@@ -50,11 +64,11 @@ const renderer = (() => {
 
         projectEL.append(iconImg, name, optionsImg);
         return projectEL;
-    }
+    };
 
     const _renderCategoryHeader = (project) => {
         categoryHeaderElement.textContent = project.name;
-    }
+    };
 
     const _buttonElement = (imgSrc, alt = null) => {
         const buttonEL = document.createElement("button");
@@ -65,7 +79,7 @@ const renderer = (() => {
         img.classList.add("icon");
         buttonEL.append(img);
         return buttonEL;
-    }
+    };
 
     const _createTaskElement = ({ title, priority, dueDate, completed, id }) => {
         const taskEL = document.createElement("li");
@@ -109,7 +123,7 @@ const renderer = (() => {
     const renderProject = (project) => {
         _renderCategoryHeader(project);
         _renderProjectTasks(project);
-    }
+    };
 
     const _renderProjectTasks = (project) => {
         const projectElement = Array.from(projectsElement.children).find(projectEL => projectEL.dataset.id === project.id);
@@ -123,7 +137,7 @@ const renderer = (() => {
         project.getTasks().forEach(task => {
             _renderTask(task);
         });
-    }
+    };
 
     const _renderTask = (task) => {
         const taskEL = _createTaskElement(task);
