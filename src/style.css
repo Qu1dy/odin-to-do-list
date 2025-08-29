@@ -173,7 +173,7 @@ header img {
     margin-left: 1rem;
 }
 
-footer .icon, .task-header .icon {
+footer .icon, .task-header .icon, #expanded .icon {
     margin-top: 0.3rem;
     height: 1.5rem;
     width: auto;
@@ -222,9 +222,6 @@ button:focus {
     align-items: center;
     padding: 0.5rem;
     border-radius: 6px;
-}
-
-.task, .expanded-task {
     background-color:#4E878C;
 }
 
@@ -299,3 +296,44 @@ ul {
     text-decoration-thickness: 3px;
 }
 
+
+#expanded {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 40vw;
+    background-color: paleturquoise;
+    border-radius: 16px;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+}
+
+#expanded p {
+    width: 50ch;
+}
+
+#expanded > div:first-child {
+    display: grid;
+    grid-template-columns: auto 2rem;
+    align-items: center; 
+}
+
+#expanded > div:first-child > h1 {
+    order: 1;
+}
+
+#expanded > div:first-child > button {
+    order: 2;
+}
+
+#expanded > div > * {
+    display: inline;
+    margin-right: 0.25rem;
+}
+
+#expanded > div > h3,#expanded > div > p {
+    font-size: 1.25rem;
+    font-weight: 550;
+}

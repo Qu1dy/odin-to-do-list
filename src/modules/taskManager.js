@@ -44,6 +44,7 @@ class Project {
     }
 
     addTask(task) {
+        task.project = this.name;
         this.#tasks.push(task);
     }
 
@@ -75,7 +76,12 @@ class Task {
         this.priority = priority;
         this.dueDate = dueDate;
         this.completed = false;
+        this.project = null;
         this.id = crypto.randomUUID();
+    }
+
+    get status() {
+        return this.completed ? "Done" : "Not done yet";
     }
 
     changeState = () => {

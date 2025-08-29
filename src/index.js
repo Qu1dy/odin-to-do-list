@@ -3,11 +3,12 @@ import renderer from "./modules/renderer.js";
 import { Task, Project, ProjectManager } from "./modules/taskManager.js";
 
 const main = (() => {
-    let createTaskButton, taskForm;
+    let createTaskButton, taskForm, closeDialogButton, expandedTaskDialog;
 
     const init = () => {
         _cacheDom();
         _handleTaskFormEvents();
+        _handleKeyPresses();
         if (ProjectManager.getProjects().length === 0) {
             _addTemplateProject();
         }
@@ -16,7 +17,9 @@ const main = (() => {
 
     const _cacheDom = () => {
         createTaskButton = document.querySelector("#create-task");
+        closeDialogButton = document.querySelector("#close");
         taskForm = document.querySelector(".to-do-form");
+        expandedTaskDialog = document.querySelector("#expanded");
     };
 
     const _removeTask = (id) => {
@@ -47,6 +50,24 @@ const main = (() => {
         _removeTask(taskId);
     };
 
+    const _onKeyDown = (e) => {
+        if (e.key !== "Escape") return;
+
+        if (expandedTaskDialog.open) {
+            renderer.closeExpandedTask();
+            return;
+        }
+
+        if (taskForm.style.display === "block") {
+            renderer.hideTaskForm();
+        }
+    }
+
+    const _handleKeyPresses = () => {
+        closeDialogButton.addEventListener("click", renderer.closeExpandedTask);
+        document.addEventListener("keydown", (e) => _onKeyDown(e));
+    };
+
     const _getTask = (button) => {
         const taskId = button.parentElement.dataset.id;
         const task = ProjectManager.getActiveProject().getTask(taskId);
@@ -58,12 +79,12 @@ const main = (() => {
         task.changeState();
     };
 
-    const _addEvent = (buttonsId, func, renderAfter=true) => {
+    const _addEvent = (buttonsId, func, renderAfter = true) => {
         const buttons = document.querySelectorAll(`#${buttonsId}`);
         buttons.forEach(button => {
             button.addEventListener("click", () => {
                 func(button);
-                if(!renderAfter) return;
+                if (!renderAfter) return;
                 _renderWithEvents();
             });
         });
@@ -90,6 +111,12 @@ const main = (() => {
         _addEvent("delete", _onTaskDelete);
         _addEvent("state", _onTaskChangeState);
         _addEvent("edit", _onTaskEdit, false);
+        _addEvent("expand", _onTaskExpand, false);
+    };
+
+    const _onTaskExpand = (expandButton) => {
+        const task = _getTask(expandButton);
+        renderer.renderExpandedTask(task);
     };
 
     const _handleTaskFormEvents = () => {

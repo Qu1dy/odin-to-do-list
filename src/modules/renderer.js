@@ -3,12 +3,11 @@ import optionsIcon from "../assets/hamburger-menu.svg";
 import editIcon from "../assets/edit.svg";
 import deleteIcon from "../assets/delete.svg";
 import expandIcon from "../assets/expand-task.svg";
-import shrinkIcon from "../assets/shrink-task.svg";
-import taskDoneIcon from "../assets/checked.svg";
+    import taskDoneIcon from "../assets/checked.svg";
 import taskUndoneIcon from "../assets/unchecked.svg";
 
 const renderer = (() => {
-    let projectsElement, TasksElement, categoryHeaderElement, activeCategory, taskForm, formButton;
+    let projectsElement, TasksElement, categoryHeaderElement, activeCategory, taskForm, formButton, expandedTaskDialog;
 
     const _cacheDom = () => {
         projectsElement = document.querySelector(".projects");
@@ -16,11 +15,31 @@ const renderer = (() => {
         categoryHeaderElement = document.querySelector(".category-name");
         taskForm = document.querySelector(".to-do-form");
         formButton = taskForm.querySelector("button");
-    }
+        expandedTaskDialog = document.querySelector("#expanded");
+    };
 
     const hideTaskForm = () => {
         taskForm.style.display = "none";
-    }
+    };
+
+    const renderExpandedTask = (task) => {
+        expandedTaskDialog.show();
+        
+        const divs = expandedTaskDialog.children;
+        Array.from(divs).forEach(div => {
+            const toChange = div.children[1];
+            const className = toChange.classList[0];
+            let text = task[className];
+            if(className === "priority") {
+                text = text.charAt(0).toUpperCase() + text.slice(1); //capitalize
+            }
+            toChange.textContent = text;
+        });
+    };
+
+    const closeExpandedTask = () => {
+        expandedTaskDialog.close();
+    };
 
     const renderTaskForm = (index = null, task=null) => {
         const _changeButtonText = (newText) => {
@@ -143,7 +162,7 @@ const renderer = (() => {
 
     _cacheDom();
 
-    return { renderProjects, renderProject, renderTaskForm, hideTaskForm };
+    return { renderProjects, closeExpandedTask ,renderProject, renderTaskForm, hideTaskForm, renderExpandedTask};
 })();
 
 export default renderer;
