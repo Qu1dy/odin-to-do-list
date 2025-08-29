@@ -41,6 +41,7 @@ class Project {
         this.name = name;
         this.id = crypto.randomUUID();
         this.#tasks = [];
+        ProjectManager.addProject(this);
     }
 
     addTask(task) {

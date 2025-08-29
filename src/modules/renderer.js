@@ -7,7 +7,7 @@ import expandIcon from "../assets/expand-task.svg";
 import taskUndoneIcon from "../assets/unchecked.svg";
 
 const renderer = (() => {
-    let projectsElement, TasksElement, categoryHeaderElement, activeCategory, taskForm, formButton, expandedTaskDialog;
+    let projectsElement, TasksElement, categoryHeaderElement, activeCategory, taskForm, formButton, expandedTaskDialog, projectForm;
 
     const _cacheDom = () => {
         projectsElement = document.querySelector(".projects");
@@ -16,10 +16,19 @@ const renderer = (() => {
         taskForm = document.querySelector(".to-do-form");
         formButton = taskForm.querySelector("button");
         expandedTaskDialog = document.querySelector("#expanded");
+        projectForm = document.querySelector("#project-form");
     };
 
     const hideTaskForm = () => {
         taskForm.style.display = "none";
+    };
+
+    const hideProjectForm = () => {
+        projectForm.style.display = "none";
+    };
+
+    const renderProjectForm = (index, project) => {
+        _renderForm(projectForm, index, project, projectsElement, "flex");  
     };
 
     const renderExpandedTask = (task) => {
@@ -41,29 +50,33 @@ const renderer = (() => {
         expandedTaskDialog.close();
     };
 
-    const renderTaskForm = (index = null, task=null) => {
-        const _changeButtonText = (newText) => {
-            formButton.textContent = newText;
-        };
-        
-        taskForm.style.display = "block";
-        if (index === null || task === null) {
+    const _changeButtonText = (newText) => {
+        formButton.textContent = newText;
+    };
+
+    const renderTaskForm = (index, task) => {
+        _renderForm(taskForm, index, task, TasksElement, "block");  
+    };
+
+    const _renderForm = (form, index = null, object=null, parent, displayType) => {
+        form.style.display = displayType;
+        if (index === null || object === null) {
             delete taskForm.dataset;
             taskForm.reset();
             _changeButtonText("Add task");
-            TasksElement.insertBefore(taskForm, TasksElement.firstChild);
+            parent.insertBefore(form, parent.firstChild);
             return;
         }
 
-        const taskToReplace = TasksElement.children[index];
-        taskForm.dataset.taskId = task.id;
+        const ElementToReplace = parent.children[index];
+        form.dataset.id = object.id;
         _changeButtonText("Apply changes");
-        for (const child of Array.from(taskForm.children).filter(child => child.tagName === "P")) {
+        for (const child of Array.from(form.children).filter(child => child.tagName === "P")) {
             const input = child.children[1];
-            input.value = task[input.id].replaceAll("/", "-");
+            input.value = object[input.id].replaceAll("/", "-");
         }
         
-        TasksElement.replaceChild(taskForm, taskToReplace);
+        parent.replaceChild(form, ElementToReplace);
     };
 
     const _createProjectElement = ({ name, id }) => {
@@ -126,7 +139,9 @@ const renderer = (() => {
     };
 
     const renderProjects = (projects) => {
+        projectsElement.innerHTML = "";
         projects.forEach(project => {
+            console.log(project);
             _renderProjectInSidebar(project);
         });
     };
@@ -162,7 +177,7 @@ const renderer = (() => {
 
     _cacheDom();
 
-    return { renderProjects, closeExpandedTask ,renderProject, renderTaskForm, hideTaskForm, renderExpandedTask};
+    return {hideProjectForm, renderProjectForm, renderProjects, closeExpandedTask ,renderProject, renderTaskForm, hideTaskForm, renderExpandedTask};
 })();
 
 export default renderer;
