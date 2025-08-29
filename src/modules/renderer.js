@@ -70,9 +70,9 @@ const renderer = (() => {
         categoryHeaderElement.textContent = project.name;
     };
 
-    const _buttonElement = (imgSrc, alt = null) => {
+    const _buttonElement = (imgSrc, alt, id=null) => {
         const buttonEL = document.createElement("button");
-
+        buttonEL.setAttribute("id", id ?? alt.toLowerCase());
         const img = document.createElement("img");
         img.src = imgSrc;
         img.alt = alt;
@@ -87,8 +87,7 @@ const renderer = (() => {
         taskEL.classList.add("task");
         taskEL.classList.add(priority);
 
-        const taskStatus = completed ? _buttonElement(taskDoneIcon, "Done") : _buttonElement(taskUndoneIcon, "Undone");
-        taskStatus.setAttribute("id", "state");
+        const taskStatus = completed ? _buttonElement(taskDoneIcon, "Done", "state") : _buttonElement(taskUndoneIcon, "Undone", "state");
 
         const titleEL = document.createElement("h3");
         titleEL.textContent = title;
@@ -97,9 +96,7 @@ const renderer = (() => {
         }
 
         const editButtonEL = _buttonElement(editIcon, "Edit");
-        editButtonEL.setAttribute("id", "edit");
         const deleteButtonEL = _buttonElement(deleteIcon, "Delete");
-        deleteButtonEL.setAttribute("id", "delete");
         const dateEL = document.createElement("h4");
         dateEL.textContent = dueDate.replaceAll("-", "/");
 
