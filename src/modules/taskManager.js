@@ -53,6 +53,10 @@ class Project {
         return this.#tasks;
     }
 
+    get active() {
+        return ProjectManager.getActiveProject() === this;
+    }
+
     removeTask(taskId) {
         removeFromArray(taskId, this.#tasks);
     }

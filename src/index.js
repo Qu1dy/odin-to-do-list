@@ -30,7 +30,7 @@ const main = (() => {
     };
 
     const _renderWithEvents = () => {
-        renderer.renderProject(ProjectManager.getActiveProject());
+        renderer.renderProjects(ProjectManager.getProjects());
         _handleEvents();
     }
 
@@ -62,6 +62,10 @@ const main = (() => {
 
         if (taskForm.style.display === "block") {
             renderer.hideTaskForm();
+            return;
+        }
+        if(projectForm.style.display === "flex") {
+            renderer.hideProjectForm();
         }
     }
 
@@ -106,7 +110,6 @@ const main = (() => {
             activeProject.addTask(task);
         }
         taskForm.reset();
-        _renderWithEvents();
     };
 
     const _handleEvents = () => {
@@ -132,12 +135,13 @@ const main = (() => {
     const _handleForm = (button, renderFormEvent, form, onSubmitEvent) => {
         button.addEventListener("click", () => {
             delete taskForm.datasetl;
-            renderFormEvent()
+            renderFormEvent();
         });
 
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             onSubmitEvent();
+            _renderWithEvents();
         });
     }
 

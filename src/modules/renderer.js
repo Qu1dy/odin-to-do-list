@@ -3,11 +3,11 @@ import optionsIcon from "../assets/hamburger-menu.svg";
 import editIcon from "../assets/edit.svg";
 import deleteIcon from "../assets/delete.svg";
 import expandIcon from "../assets/expand-task.svg";
-    import taskDoneIcon from "../assets/checked.svg";
+import taskDoneIcon from "../assets/checked.svg";
 import taskUndoneIcon from "../assets/unchecked.svg";
 
 const renderer = (() => {
-    let projectsElement, TasksElement, categoryHeaderElement, activeCategory, taskForm, formButton, expandedTaskDialog, projectForm;
+    let projectsElement, TasksElement, categoryHeaderElement, taskForm, formButton, expandedTaskDialog, projectForm;
 
     const _cacheDom = () => {
         projectsElement = document.querySelector(".projects");
@@ -28,18 +28,18 @@ const renderer = (() => {
     };
 
     const renderProjectForm = (index, project) => {
-        _renderForm(projectForm, index, project, projectsElement, "flex");  
+        _renderForm(projectForm, index, project, projectsElement, "flex");
     };
 
     const renderExpandedTask = (task) => {
         expandedTaskDialog.show();
-        
+
         const divs = expandedTaskDialog.children;
         Array.from(divs).forEach(div => {
             const toChange = div.children[1];
             const className = toChange.classList[0];
             let text = task[className];
-            if(className === "priority") {
+            if (className === "priority") {
                 text = text.charAt(0).toUpperCase() + text.slice(1); //capitalize
             }
             toChange.textContent = text;
@@ -50,15 +50,16 @@ const renderer = (() => {
         expandedTaskDialog.close();
     };
 
-    const _changeButtonText = (newText) => {
-        formButton.textContent = newText;
-    };
-
     const renderTaskForm = (index, task) => {
-        _renderForm(taskForm, index, task, TasksElement, "block");  
+        _renderForm(taskForm, index, task, TasksElement, "block");
     };
 
-    const _renderForm = (form, index = null, object=null, parent, displayType) => {
+    const _renderForm = (form, index = null, object = null, parent, displayType) => {
+
+        const _changeButtonText = (newText) => {
+            formButton.textContent = newText;
+        };
+
         form.style.display = displayType;
         if (index === null || object === null) {
             delete taskForm.dataset;
@@ -75,7 +76,7 @@ const renderer = (() => {
             const input = child.children[1];
             input.value = object[input.id].replaceAll("/", "-");
         }
-        
+
         parent.replaceChild(form, ElementToReplace);
     };
 
@@ -98,11 +99,11 @@ const renderer = (() => {
         return projectEL;
     };
 
-    const _renderCategoryHeader = (project) => {
-        categoryHeaderElement.textContent = project.name;
+    const _renderCategoryHeader = (category) => {
+        categoryHeaderElement.textContent = category.name;
     };
 
-    const _buttonElement = (imgSrc, alt, id=null) => {
+    const _buttonElement = (imgSrc, alt, id = null) => {
         const buttonEL = document.createElement("button");
         buttonEL.setAttribute("id", id ?? alt.toLowerCase());
         const img = document.createElement("img");
@@ -141,29 +142,25 @@ const renderer = (() => {
     const renderProjects = (projects) => {
         projectsElement.innerHTML = "";
         projects.forEach(project => {
-            console.log(project);
             _renderProjectInSidebar(project);
+            if (project.active) {
+                _renderProject(project);
+            }
         });
     };
 
     const _renderProjectInSidebar = (project) => {
         const projectEL = _createProjectElement(project);
+        if (project.active) projectEL.classList.add("active");
         projectsElement.append(projectEL);
     };
 
-    const renderProject = (project) => {
+    const _renderProject = (project) => {
         _renderCategoryHeader(project);
         _renderProjectTasks(project);
     };
 
     const _renderProjectTasks = (project) => {
-        const projectElement = Array.from(projectsElement.children).find(projectEL => projectEL.dataset.id === project.id);
-        if (activeCategory) {
-            activeCategory.classList.toggle("active");
-        }
-        activeCategory = projectElement;
-        activeCategory.classList.toggle("active");
-
         TasksElement.innerHTML = "";
         project.getTasks().forEach(task => {
             _renderTask(task);
@@ -177,7 +174,7 @@ const renderer = (() => {
 
     _cacheDom();
 
-    return {hideProjectForm, renderProjectForm, renderProjects, closeExpandedTask ,renderProject, renderTaskForm, hideTaskForm, renderExpandedTask};
+    return { hideProjectForm, renderProjectForm, renderProjects, closeExpandedTask, renderTaskForm, hideTaskForm, renderExpandedTask };
 })();
 
 export default renderer;
