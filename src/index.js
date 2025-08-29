@@ -45,7 +45,6 @@ const main = (() => {
     const _onTaskDelete = (deleteButton) => {
         const taskId = deleteButton.parentElement.dataset.id;
         _removeTask(taskId);
-        _renderWithEvents();
     };
 
     const _getTask = (button) => {
@@ -57,20 +56,16 @@ const main = (() => {
     const _onTaskChangeState = (stateButton) => {
         const task = _getTask(stateButton);
         task.changeState();
-        _renderWithEvents();
     };
 
-    const _addChangeTaskStateEvent = () => {
-        const stateButtons = document.querySelectorAll("#state");
-        stateButtons.forEach(stateButton => {
-            stateButton.addEventListener("click", () => _onTaskChangeState(stateButton));
-        });
-    };
-
-    const _addDeleteTaskEvent = () => {
-        const deleteButtons = document.querySelectorAll("#delete");
-        deleteButtons.forEach(deleteButton => {
-            deleteButton.addEventListener("click", () => _onTaskDelete(deleteButton));
+    const _addEvent = (buttonsId, func, renderAfter=true) => {
+        const buttons = document.querySelectorAll(`#${buttonsId}`);
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                func(button);
+                if(!renderAfter) return;
+                _renderWithEvents();
+            });
         });
     };
 
@@ -92,9 +87,9 @@ const main = (() => {
     };
 
     const _handleEvents = () => {
-        _addDeleteTaskEvent();
-        _addChangeTaskStateEvent();
-        _addEditTaskEvent();
+        _addEvent("delete", _onTaskDelete);
+        _addEvent("state", _onTaskChangeState);
+        _addEvent("edit", _onTaskEdit, false);
     };
 
     const _handleTaskFormEvents = () => {
@@ -103,13 +98,6 @@ const main = (() => {
         taskForm.addEventListener("submit", (e) => {
             e.preventDefault();
             _onFormSubmit(e);
-        });
-    };
-
-    const _addEditTaskEvent = () => {
-        const editButtons = document.querySelectorAll("#edit");
-        editButtons.forEach(editButton => {
-            editButton.addEventListener("click", () => _onTaskEdit(editButton));
         });
     };
 
