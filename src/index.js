@@ -61,7 +61,7 @@ const main = (() => {
         }
 
         if (taskForm.style.display === "block") {
-            renderer.hideTaskForm();
+            _renderWithEvents();
             return;
         }
         if(projectForm.style.display === "flex") {
