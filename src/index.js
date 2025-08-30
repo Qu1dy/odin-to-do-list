@@ -39,13 +39,6 @@ const main = (() => {
         const templateProject = new Project("Project 1");
         ProjectManager.setActiveProject(templateProject.id);
         renderer.renderProjects(ProjectManager.getProjects());
-        const task = new Task({
-            title: "meow",
-            description: "meow meow",
-            priority: "high",
-            dueDate: "2025/09/01"
-        });
-        templateProject.addTask(task);
     };
 
     const _onTaskDelete = (deleteButton) => {
@@ -112,6 +105,7 @@ const main = (() => {
     const _onTaskFormSubmit = () => {
         const [data, taskId] = _onFormSubmit(taskForm, renderer.hideTaskForm);
         const activeProject = ProjectManager.getActiveProject();
+        console.log(taskId);
         if (taskId) {
             activeProject.editTask(taskId, data);
         }

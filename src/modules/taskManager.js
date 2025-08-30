@@ -61,15 +61,14 @@ const ProjectManager = (() => {
     };
 
     const _isDueThisWeek = (task) => {
-        const dueDateAsTime = parse(task.dueDate, "yyyy/MM/dd", new Date());
-
+        const dueDateAsTime = parse(task.dueDate, "yyyy-MM-dd", new Date());
         const today = new Date();
         const inAWeek = addWeeks(today, 1);
         const interval = {start: today, end: inAWeek};
 
         return isWithinInterval(dueDateAsTime, interval);
     };
-    
+
     const getTasksDueThisWeek = () => {
         const allTasks = getAllTasks();
         const dueThisWeek = allTasks.filter(_isDueThisWeek); 
