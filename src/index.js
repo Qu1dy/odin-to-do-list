@@ -3,13 +3,13 @@ import renderer from "./modules/renderer.js";
 import { Task, Project, ProjectManager } from "./modules/taskManager.js";
 
 const main = (() => {
-    let createTaskButton, taskForm, closeDialogButton, expandedTaskDialog, projectForm, createProjectButton;
+    let createTaskButton, taskForm, closeDialogButton, expandedTaskDialog, projectForm, createProjectButton, showAllTasksButton;
 
     const init = () => {
         _cacheDom();
-        _handleTaskFormEvents();
-        _handleProjectFormEvents();
         _handleKeyPresses();
+        _handleFormEvents();
+        _handleCategoryEvents();
         if (ProjectManager.getProjects().length === 0) {
             _addTemplateProject();
         }
@@ -19,6 +19,7 @@ const main = (() => {
     const _cacheDom = () => {
         createTaskButton = document.querySelector("#create-task");
         createProjectButton = document.querySelector("#create-project")
+        showAllTasksButton = document.querySelector("#all-tasks");
         closeDialogButton = document.querySelector("#close");
         taskForm = document.querySelector(".to-do-form");
         expandedTaskDialog = document.querySelector("#expanded");
@@ -170,12 +171,18 @@ const main = (() => {
         });
     };
 
-    const _handleProjectFormEvents = () => {
-        _handleForm(createProjectButton, renderer.renderProjectForm, projectForm, _onProjectFormSubmit);
+    const _handleCategoryEvents = () => {
+        showAllTasksButton.addEventListener("click", 
+            () => {
+                renderer.renderCategory(showAllTasksButton, ProjectManager.getAllTasks(), ProjectManager.getProjects());
+                _handleEvents();
+            }
+        );
     };
 
-    const _handleTaskFormEvents = () => {
+    const _handleFormEvents = () => {
         _handleForm(createTaskButton, renderer.renderTaskForm, taskForm, _onTaskFormSubmit);
+        _handleForm(createProjectButton, renderer.renderProjectForm, projectForm, _onProjectFormSubmit);
     };
 
     const _onTaskEdit = (editButton) => {

@@ -4,7 +4,8 @@ const removeFromArray = (id, arr) => {
     );
     const index = arr.indexOf(item);
     arr.splice(index, 1);
-}
+};
+
 
 const ProjectManager = (() => {
     const projects = [];
@@ -39,7 +40,19 @@ const ProjectManager = (() => {
         activeProject = projects.find(project => project.id === projectId);
     };
 
-    return { editProject, getProjects, getProjectById, removeProject, addProject, getActiveProject, setActiveProject };
+    const getAllTasks = () => {
+        activeProject = null;
+
+        const allTasks = [];
+        projects.forEach(project => {
+            const projectTasks = project.getTasks();
+            allTasks.push(...projectTasks);
+        });
+
+        return allTasks;
+    };
+
+    return { editProject, getAllTasks,getProjects, getProjectById, removeProject, addProject, getActiveProject, setActiveProject };
 
 })();
 

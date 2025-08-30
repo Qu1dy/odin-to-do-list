@@ -6,7 +6,7 @@ import taskDoneIcon from "../assets/checked.svg";
 import taskUndoneIcon from "../assets/unchecked.svg";
 
 const renderer = (() => {
-    let projectsElement, TasksElement, categoryHeaderElement, taskForm, formButton, expandedTaskDialog, projectForm;
+    let projectsElement, categories, TasksElement, categoryHeaderElement, taskForm, formButton, expandedTaskDialog, projectForm;
 
     const _cacheDom = () => {
         projectsElement = document.querySelector(".projects");
@@ -16,6 +16,7 @@ const renderer = (() => {
         formButton = taskForm.querySelector("button");
         expandedTaskDialog = document.querySelector("#expanded");
         projectForm = document.querySelector("#project-form");
+        categories = document.querySelector(".categories");
     };
 
     const hideTaskForm = () => {
@@ -72,10 +73,19 @@ const renderer = (() => {
         form.dataset.id = object.id;
         _changeButtonText("Apply changes");
         for (const child of Array.from(form.children).filter(child => child.tagName === "P")) {
-            const input = child.querySelector("input, textarea, select"); 
+            const input = child.querySelector("input, textarea, select");
             input.value = object[input.name].replaceAll("/", "-");
         }
         parent.replaceChild(form, ElementToReplace);
+    };
+
+    const renderCategory = (button, tasks, projects) => {
+        renderProjects(projects);
+        button.classList.add("active");
+        categoryHeaderElement.textContent = button.textContent;
+        tasks.forEach(task => {
+            _renderTask(task)
+        });
     };
 
     const _createProjectElement = ({ name, id }) => {
@@ -93,10 +103,6 @@ const renderer = (() => {
 
         projectEL.append(iconImg, name, editButton, deleteButton);
         return projectEL;
-    };
-
-    const _renderCategoryHeader = (category) => {
-        categoryHeaderElement.textContent = category.name;
     };
 
     const _buttonElement = (imgSrc, alt, _class = null) => {
@@ -135,10 +141,21 @@ const renderer = (() => {
         return taskEL;
     };
 
-    const renderProjects = (projects) => {
+    const _clearData = () => {
         projectsElement.innerHTML = "";
         TasksElement.innerHTML = "";
         categoryHeaderElement.textContent = "";
+    };
+
+    const _removeActiveFromCategories = () => {
+        Array.from(categories.children).forEach(category => {
+            category.classList.remove("active");
+        });
+    };
+
+    const renderProjects = (projects) => {
+        _clearData();
+        _removeActiveFromCategories();
         projects.forEach(project => {
             _renderProjectInSidebar(project);
             if (project.active) {
@@ -154,7 +171,7 @@ const renderer = (() => {
     };
 
     const _renderProject = (project) => {
-        _renderCategoryHeader(project);
+        categoryHeaderElement.textContent = project.name;
         _renderProjectTasks(project);
     };
 
@@ -171,7 +188,7 @@ const renderer = (() => {
 
     _cacheDom();
 
-    return { hideProjectForm, renderProjectForm, renderProjects, closeExpandedTask, renderTaskForm, hideTaskForm, renderExpandedTask };
+    return { hideProjectForm, renderCategory, renderProjectForm, renderProjects, closeExpandedTask, renderTaskForm, hideTaskForm, renderExpandedTask };
 })();
 
 export default renderer;
