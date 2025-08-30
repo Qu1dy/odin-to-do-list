@@ -83,6 +83,7 @@ const renderer = (() => {
     const renderCategory = (button, tasks, projects) => {
         renderProjects(projects);
         button.classList.add("active");
+        createTaskButton.style.display = "none";
         categoryHeaderElement.textContent = button.textContent;
         tasks.forEach(task => {
             _renderTask(task)
@@ -161,6 +162,7 @@ const renderer = (() => {
             _renderProjectInSidebar(project);
             if (project.active) {
                 _renderProject(project);
+                createTaskButton.style.display = "block";
             }
         });
     };
