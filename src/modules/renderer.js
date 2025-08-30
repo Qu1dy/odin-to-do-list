@@ -103,9 +103,9 @@ const renderer = (() => {
         categoryHeaderElement.textContent = category.name;
     };
 
-    const _buttonElement = (imgSrc, alt, id = null) => {
+    const _buttonElement = (imgSrc, alt, _class = null) => {
         const buttonEL = document.createElement("button");
-        buttonEL.setAttribute("id", id ?? alt.toLowerCase());
+        buttonEL.setAttribute("class", _class ?? alt.toLowerCase());
         const img = document.createElement("img");
         img.src = imgSrc;
         img.alt = alt;

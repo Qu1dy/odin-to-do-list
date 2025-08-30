@@ -76,7 +76,7 @@ const main = (() => {
 
     const _getTask = (button) => {
         const taskId = button.parentElement.dataset.id;
-        const task = ProjectManager.getActiveProject().getTask(taskId);
+        const task = ProjectManager.getActiveProject().getTaskById(taskId);
         return task;
     };
 
@@ -86,7 +86,7 @@ const main = (() => {
     };
 
     const _addEvent = (buttonsId, func, renderAfter = true) => {
-        const buttons = document.querySelectorAll(`#${buttonsId}`);
+        const buttons = document.querySelectorAll(`.${buttonsId}`);
         buttons.forEach(button => {
             button.addEventListener("click", () => {
                 func(button);
@@ -117,6 +117,13 @@ const main = (() => {
         _addEvent("state", _onTaskChangeState);
         _addEvent("edit", _onTaskEdit, false);
         _addEvent("expand", _onTaskExpand, false);
+        _addEvent("project", _onProjectSelect);
+    };
+
+    const _onProjectSelect = (projectButton) => {
+        const projectId = projectButton.dataset.id;
+        const project = ProjectManager.getProjectById(projectId);
+        ProjectManager.setActiveProject(project);
     };
 
     const _onTaskExpand = (expandButton) => {
@@ -155,7 +162,8 @@ const main = (() => {
 
     const _onTaskEdit = (editButton) => {
         const task = _getTask(editButton);
-        const index = ProjectManager.getActiveProject().getTasks().indexOf(task);
+        const tasks = ProjectManager.getActiveProject().getTasks();
+        const index = tasks.indexOf(task);
         renderer.renderTaskForm(index, task);
     };
 

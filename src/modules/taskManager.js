@@ -18,6 +18,10 @@ const ProjectManager = (() => {
         projects.push(project);
     };
 
+    const getProjectById = (projectId) => {
+        return projects.find(project => project.id === projectId);
+    };
+
     const removeProject = (projectId) => {
         removeFromArray(projectId, projects);
     }
@@ -30,7 +34,7 @@ const ProjectManager = (() => {
         activeProject = project;
     };
 
-    return { getProjects, removeProject, addProject, getActiveProject, setActiveProject };
+    return { getProjects, getProjectById, removeProject, addProject, getActiveProject, setActiveProject };
 
 })();
 
@@ -45,7 +49,7 @@ class Project {
     }
 
     addTask(task) {
-        task.project = this.name;
+        task.projectName = this.name;
         this.#tasks.push(task);
     }
 
@@ -61,7 +65,7 @@ class Project {
         removeFromArray(taskId, this.#tasks);
     }
 
-    getTask(taskId) {
+    getTaskById(taskId) {
         return this.#tasks.find(task => task.id === taskId);
     }
 
@@ -81,7 +85,7 @@ class Task {
         this.priority = priority;
         this.dueDate = dueDate;
         this.completed = false;
-        this.project = null;
+        this.projectName = null;
         this.id = crypto.randomUUID();
     }
 
