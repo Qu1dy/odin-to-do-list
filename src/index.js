@@ -1,14 +1,17 @@
 import "./style.css";
 import renderer from "./modules/renderer.js";
 import { Task, Project, ProjectManager } from "./modules/taskManager.js";
+import { format } from "date-fns";
 
 const main = (() => {
     let createTaskButton, showOnlyCompleted, taskForm,
         closeDialogButton, expandedTaskDialog,
-        projectForm, createProjectButton, showAllTasks, showOnlyDueThisWeek;
+        projectForm, createProjectButton, showAllTasks,
+        showOnlyDueThisWeek, datePicker;
 
     const init = () => {
         _cacheDom();
+        datePicker.min = format(new Date(), "yyyy-MM-dd");
         _handleKeyPresses();
         _handleFormEvents();
         _handleCategoryEvents();
@@ -28,6 +31,7 @@ const main = (() => {
         taskForm = document.querySelector(".to-do-form");
         expandedTaskDialog = document.querySelector("#expanded");
         projectForm = document.querySelector("#project-form");
+        datePicker = document.querySelector("#dueDate");
     };
 
     const _renderWithEvents = () => {
