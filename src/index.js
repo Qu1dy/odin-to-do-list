@@ -25,10 +25,6 @@ const main = (() => {
         projectForm = document.querySelector("#project-form");
     };
 
-    const _removeTask = (id) => {
-        ProjectManager.getActiveProject().removeTask(id);
-    };
-
     const _renderWithEvents = () => {
         renderer.renderProjects(ProjectManager.getProjects());
         _handleEvents();
@@ -49,7 +45,12 @@ const main = (() => {
 
     const _onTaskDelete = (deleteButton) => {
         const taskId = deleteButton.parentElement.dataset.id;
-        _removeTask(taskId);
+        ProjectManager.getActiveProject().removeTask(taskId);
+    };
+
+    const _deleteProject = (deleteButton) => {
+        const projectId = deleteButton.parentElement.dataset.id;
+        ProjectManager.removeProject(projectId);
     };
 
     const _onKeyDown = (e) => {
@@ -98,7 +99,6 @@ const main = (() => {
                 e.stopPropagation();
                 func(button);
                 if (!renderAfter) return;
-                console.log("meow");
                 _renderWithEvents();
             });
         });
@@ -123,6 +123,7 @@ const main = (() => {
         _addEvent(".task .expand", _onTaskExpand, false);
         _addEvent(".project", _onProjectSelect);
         _addEvent(".project .edit", _onProjectEdit, false);
+        _addEvent(".project .delete", _deleteProject);
     };
 
     const _onProjectSelect = (projectButton) => {

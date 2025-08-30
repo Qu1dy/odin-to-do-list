@@ -137,6 +137,8 @@ const renderer = (() => {
 
     const renderProjects = (projects) => {
         projectsElement.innerHTML = "";
+        TasksElement.innerHTML = "";
+        categoryHeaderElement.textContent = "";
         projects.forEach(project => {
             _renderProjectInSidebar(project);
             if (project.active) {
@@ -157,7 +159,6 @@ const renderer = (() => {
     };
 
     const _renderProjectTasks = (project) => {
-        TasksElement.innerHTML = "";
         project.getTasks().forEach(task => {
             _renderTask(task);
         });
