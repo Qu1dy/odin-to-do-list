@@ -163,12 +163,12 @@ const main = (() => {
         else {
             ProjectManager.editProject(projectId, name);
         }
-        renderer.renderProjects(ProjectManager.getProjects());
+        renderer.showProjects(ProjectManager.getProjects());
     };
 
     const _handleForm = (button, renderFormEvent, form, onSubmitEvent) => {
         button.addEventListener("click", () => {
-            delete form.dataset;
+            delete form.dataset.id;
             renderFormEvent();
             form.reset();
         });
