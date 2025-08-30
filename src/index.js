@@ -35,14 +35,14 @@ const main = (() => {
     };
 
     const _renderWithEvents = () => {
-        renderer.renderProjects(ProjectManager.getProjects());
+        renderer.showProjects(ProjectManager.getProjects());
         _handleEvents();
     };
 
     const _addTemplateProject = () => {
         const templateProject = new Project("Project 1");
         ProjectManager.setActiveProject(templateProject.id);
-        renderer.renderProjects(ProjectManager.getProjects());
+        renderer.showProjects(ProjectManager.getProjects());
     };
 
     const _onTaskDelete = (deleteButton) => {
@@ -109,7 +109,6 @@ const main = (() => {
     const _onTaskFormSubmit = () => {
         const [data, taskId] = _onFormSubmit(taskForm, renderer.hideTaskForm);
         const activeProject = ProjectManager.getActiveProject();
-        console.log(taskId);
         if (taskId) {
             activeProject.editTask(taskId, data);
         }
@@ -144,7 +143,7 @@ const main = (() => {
 
     const _onTaskExpand = (expandButton) => {
         const task = _getTask(expandButton);
-        renderer.renderExpandedTask(task);
+        renderer.expandTask(task);
     };
 
     const _onFormSubmit = (form, hideForm) => {
@@ -184,7 +183,7 @@ const main = (() => {
     const _handleCategoryEvent = (button, tasks) => {
         button.addEventListener("click", () => {
             ProjectManager.clearActiveProject();
-            renderer.renderCategory(button, tasks(), ProjectManager.getProjects());
+            renderer.showCategory(button, tasks(), ProjectManager.getProjects());
             _handleProjectEvents();
         });
     };
@@ -196,22 +195,22 @@ const main = (() => {
     };
 
     const _handleFormEvents = () => {
-        _handleForm(createTaskButton, renderer.renderTaskForm, taskForm, _onTaskFormSubmit);
-        _handleForm(createProjectButton, renderer.renderProjectForm, projectForm, _onProjectFormSubmit);
+        _handleForm(createTaskButton, renderer.showTaskForm, taskForm, _onTaskFormSubmit);
+        _handleForm(createProjectButton, renderer.showProjectForm, projectForm, _onProjectFormSubmit);
     };
 
     const _onTaskEdit = (editButton) => {
         const task = _getTask(editButton);
         const tasks = ProjectManager.getActiveProject().getTasks();
         const index = tasks.indexOf(task);
-        renderer.renderTaskForm(index, task);
+        renderer.showTaskForm(index, task);
     };
 
     const _onProjectEdit = (editButton) => {
         const project = _getProject(editButton);
         const projects = ProjectManager.getProjects();
         const index = projects.indexOf(project);
-        renderer.renderProjectForm(index, project);
+        renderer.showProjectForm(index, project);
     };
 
     return { init };

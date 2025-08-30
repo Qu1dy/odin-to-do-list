@@ -28,11 +28,11 @@ const renderer = (() => {
         projectForm.style.display = "none";
     };
 
-    const renderProjectForm = (index, project) => {
+    const showProjectForm = (index, project) => {
         _renderForm(projectForm, index, project, projectsElement, "flex");
     };
 
-    const renderExpandedTask = (task) => {
+    const expandTask = (task) => {
         expandedTaskDialog.show();
 
         const divs = expandedTaskDialog.children;
@@ -51,7 +51,7 @@ const renderer = (() => {
         expandedTaskDialog.close();
     };
 
-    const renderTaskForm = (index, task) => {
+    const showTaskForm = (index, task) => {
         _renderForm(taskForm, index, task, TasksElement, "block");
     };
 
@@ -80,8 +80,8 @@ const renderer = (() => {
         parent.replaceChild(form, ElementToReplace);
     };
 
-    const renderCategory = (button, tasks, projects) => {
-        renderProjects(projects);
+    const showCategory = (button, tasks, projects) => {
+        showProjects(projects);
         button.classList.add("active");
         createTaskButton.style.display = "none";
         categoryHeaderElement.textContent = button.textContent;
@@ -155,30 +155,30 @@ const renderer = (() => {
         });
     };
 
-    const renderProjects = (projects) => {
+    const showProjects = (projects) => {
         _clearData();
         _removeActiveFromCategories();
         projects.forEach(project => {
-            _renderProjectInSidebar(project);
+            _showProjectInSidebar(project);
             if (project.active) {
-                _renderProject(project);
+                _showProject(project);
                 createTaskButton.style.display = "block";
             }
         });
     };
 
-    const _renderProjectInSidebar = (project) => {
+    const _showProjectInSidebar = (project) => {
         const projectEL = _createProjectElement(project);
         if (project.active) projectEL.classList.add("active");
         projectsElement.append(projectEL);
     };
 
-    const _renderProject = (project) => {
+    const _showProject = (project) => {
         categoryHeaderElement.textContent = project.name;
-        _renderProjectTasks(project);
+        _showProjectTasks(project);
     };
 
-    const _renderProjectTasks = (project) => {
+    const _showProjectTasks = (project) => {
         project.getTasks().forEach(task => {
             _renderTask(task);
         });
@@ -191,7 +191,7 @@ const renderer = (() => {
 
     _cacheDom();
 
-    return { hideProjectForm, renderCategory, renderProjectForm, renderProjects, closeExpandedTask, renderTaskForm, hideTaskForm, renderExpandedTask };
+    return { hideProjectForm, showCategory, showProjectForm, showProjects, closeExpandedTask, showTaskForm, hideTaskForm, expandTask };
 })();
 
 export default renderer;
