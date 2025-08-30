@@ -6,7 +6,7 @@ import taskDoneIcon from "../assets/checked.svg";
 import taskUndoneIcon from "../assets/unchecked.svg";
 
 const renderer = (() => {
-    let projectsElement, categories, TasksElement, categoryHeaderElement, taskForm, formButton, expandedTaskDialog, projectForm;
+    let projectsElement, categories, createTaskButton, TasksElement, categoryHeaderElement, taskForm, formButton, expandedTaskDialog, projectForm;
 
     const _cacheDom = () => {
         projectsElement = document.querySelector(".projects");
@@ -17,6 +17,7 @@ const renderer = (() => {
         expandedTaskDialog = document.querySelector("#expanded");
         projectForm = document.querySelector("#project-form");
         categories = document.querySelector(".categories");
+        createTaskButton = document.querySelector("#create-task");
     };
 
     const hideTaskForm = () => {

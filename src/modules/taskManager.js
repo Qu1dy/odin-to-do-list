@@ -1,3 +1,5 @@
+import {isWithinInterval, parse, addWeeks} from "date-fns";
+
 const removeFromArray = (id, arr) => {
     const item = arr.find(
         item => item.id === id
@@ -5,7 +7,6 @@ const removeFromArray = (id, arr) => {
     const index = arr.indexOf(item);
     arr.splice(index, 1);
 };
-
 
 const ProjectManager = (() => {
     const projects = [];
@@ -40,19 +41,43 @@ const ProjectManager = (() => {
         activeProject = projects.find(project => project.id === projectId);
     };
 
-    const getAllTasks = () => {
+    const clearActiveProject = () => {
         activeProject = null;
+    };
 
+    const getAllTasks = () => {
         const allTasks = [];
         projects.forEach(project => {
             const projectTasks = project.getTasks();
             allTasks.push(...projectTasks);
         });
-
         return allTasks;
     };
 
-    return { editProject, getAllTasks,getProjects, getProjectById, removeProject, addProject, getActiveProject, setActiveProject };
+    const getCompletedTasks = () => {
+        const allTasks = getAllTasks();
+        const completedTasks = allTasks.filter(task => task.completed);
+        return completedTasks;
+    };
+
+    const _isDueThisWeek = (task) => {
+        const dueDateAsTime = parse(task.dueDate, "yyyy/MM/dd", new Date());
+
+        const today = new Date();
+        const inAWeek = addWeeks(today, 1);
+        const interval = {start: today, end: inAWeek};
+
+        return isWithinInterval(dueDateAsTime, interval);
+    };
+    
+    const getTasksDueThisWeek = () => {
+        const allTasks = getAllTasks();
+        const dueThisWeek = allTasks.filter(_isDueThisWeek); 
+
+        return dueThisWeek;
+    };
+
+    return { editProject, getTasksDueThisWeek, clearActiveProject, getCompletedTasks, getAllTasks, getProjects, getProjectById, removeProject, addProject, getActiveProject, setActiveProject };
 
 })();
 
@@ -87,7 +112,7 @@ class Project {
         return this.#tasks.find(task => task.id === taskId);
     }
 
-    editTask(taskId, {title, description, priority, dueDate}) {
+    editTask(taskId, { title, description, priority, dueDate }) {
         const task = this.getTaskById(taskId);
         task.title = title;
         task.description = description;

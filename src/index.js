@@ -3,7 +3,9 @@ import renderer from "./modules/renderer.js";
 import { Task, Project, ProjectManager } from "./modules/taskManager.js";
 
 const main = (() => {
-    let createTaskButton, taskForm, closeDialogButton, expandedTaskDialog, projectForm, createProjectButton, showAllTasksButton;
+    let createTaskButton, showOnlyCompleted, taskForm,
+        closeDialogButton, expandedTaskDialog,
+        projectForm, createProjectButton, showAllTasks, showOnlyDueThisWeek;
 
     const init = () => {
         _cacheDom();
@@ -19,7 +21,9 @@ const main = (() => {
     const _cacheDom = () => {
         createTaskButton = document.querySelector("#create-task");
         createProjectButton = document.querySelector("#create-project")
-        showAllTasksButton = document.querySelector("#all-tasks");
+        showAllTasks = document.querySelector("#all-tasks");
+        showOnlyCompleted = document.querySelector("#completed-tasks");
+        showOnlyDueThisWeek = document.querySelector("#due-this-week");
         closeDialogButton = document.querySelector("#close");
         taskForm = document.querySelector(".to-do-form");
         expandedTaskDialog = document.querySelector("#expanded");
@@ -39,7 +43,7 @@ const main = (() => {
             title: "meow",
             description: "meow meow",
             priority: "high",
-            dueDate: "2025/07/05"
+            dueDate: "2025/09/01"
         });
         templateProject.addTask(task);
     };
@@ -118,10 +122,18 @@ const main = (() => {
     };
 
     const _handleEvents = () => {
+        _handleTaskEvents();
+        _handleProjectEvents();
+    };
+
+    const _handleTaskEvents = () => {
         _addEvent(".task .delete", _onTaskDelete);
         _addEvent(".task .state", _onTaskChangeState);
         _addEvent(".task .edit", _onTaskEdit, false);
         _addEvent(".task .expand", _onTaskExpand, false);
+    };
+
+    const _handleProjectEvents = () => {
         _addEvent(".project", _onProjectSelect);
         _addEvent(".project .edit", _onProjectEdit, false);
         _addEvent(".project .delete", _deleteProject);
@@ -148,7 +160,7 @@ const main = (() => {
     const _onProjectFormSubmit = () => {
         const [data, projectId] = _onFormSubmit(projectForm, renderer.hideProjectForm);
         const name = data.name;
-        if(!projectId) {
+        if (!projectId) {
             new Project(name);
         }
         else {
@@ -171,13 +183,18 @@ const main = (() => {
         });
     };
 
+    const _handleCategoryEvent = (button, tasks) => {
+        button.addEventListener("click", () => {
+            ProjectManager.clearActiveProject();
+            renderer.renderCategory(button, tasks(), ProjectManager.getProjects());
+            _handleProjectEvents();
+        });
+    };
+
     const _handleCategoryEvents = () => {
-        showAllTasksButton.addEventListener("click", 
-            () => {
-                renderer.renderCategory(showAllTasksButton, ProjectManager.getAllTasks(), ProjectManager.getProjects());
-                _handleEvents();
-            }
-        );
+        _handleCategoryEvent(showAllTasks, ProjectManager.getAllTasks);
+        _handleCategoryEvent(showOnlyCompleted, ProjectManager.getCompletedTasks);
+        _handleCategoryEvent(showOnlyDueThisWeek, ProjectManager.getTasksDueThisWeek);
     };
 
     const _handleFormEvents = () => {
@@ -201,5 +218,4 @@ const main = (() => {
 
     return { init };
 })();
-
 main.init();
