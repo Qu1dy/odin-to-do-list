@@ -2,6 +2,7 @@ import "./style.css";
 import renderer from "./modules/renderer.js";
 import { Task, Project, ProjectManager } from "./modules/taskManager.js";
 import { format } from "date-fns";
+import storage from "./modules/localStorage.js";
 
 const main = (() => {
     let createTaskButton, showOnlyCompleted, taskForm,
@@ -15,10 +16,28 @@ const main = (() => {
         _handleKeyPresses();
         _handleFormEvents();
         _handleCategoryEvents();
+        _loadDataFromStorage();
         if (ProjectManager.getProjects().length === 0) {
             _addTemplateProject();
         }
         _renderWithEvents();
+    };
+
+    const _loadDataFromStorage = () => {
+        const data = storage.getData();
+        if (!data) return;
+
+        for (const projectData of data) {
+            const project = new Project(projectData.name, projectData.id);
+            if(ProjectManager.getProjects().length === 1) {
+                ProjectManager.setActiveProject(project.id);
+            }
+            for(const taskData of projectData.tasks) {
+                console.log(taskData);
+                const task = new Task(taskData);
+                project.addTask(task);
+            }
+        }
     };
 
     const _cacheDom = () => {
@@ -35,8 +54,10 @@ const main = (() => {
     };
 
     const _renderWithEvents = () => {
-        renderer.showProjects(ProjectManager.getProjects());
+        const projects = ProjectManager.getProjects();
+        renderer.showProjects(projects);
         _handleEvents();
+        storage.saveData(projects);
     };
 
     const _addTemplateProject = () => {

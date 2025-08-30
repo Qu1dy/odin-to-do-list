@@ -83,9 +83,9 @@ const ProjectManager = (() => {
 class Project {
     #tasks;
 
-    constructor(name) {
+    constructor(name, id) {
         this.name = name;
-        this.id = crypto.randomUUID();
+        this.id = id || crypto.randomUUID();
         this.#tasks = [];
         ProjectManager.addProject(this);
     }
@@ -93,6 +93,13 @@ class Project {
     addTask(task) {
         task.projectName = this.name;
         this.#tasks.push(task);
+    }
+
+    toJSON() {
+        return {
+            name: this.name,
+            tasks: this.#tasks
+        };
     }
 
     getTasks() {
@@ -121,14 +128,14 @@ class Project {
 }
 
 class Task {
-    constructor({ title, description, priority, dueDate }) {
+    constructor({ title, description, priority, dueDate, completed, projectName, id}) {
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.dueDate = dueDate;
-        this.completed = false;
-        this.projectName = null;
-        this.id = crypto.randomUUID();
+        this.completed = completed || false;
+        this.projectName = projectName || null;
+        this.id = id || crypto.randomUUID();
     }
 
     get status() {
