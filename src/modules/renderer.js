@@ -1,5 +1,4 @@
 import projectIcon from "../assets/project.svg";
-import optionsIcon from "../assets/hamburger-menu.svg";
 import editIcon from "../assets/edit.svg";
 import deleteIcon from "../assets/delete.svg";
 import expandIcon from "../assets/expand-task.svg";
@@ -64,7 +63,7 @@ const renderer = (() => {
         if (index === null || object === null) {
             delete taskForm.dataset;
             taskForm.reset();
-            _changeButtonText("Add task");
+            _changeButtonText("Add");
             parent.insertBefore(form, parent.firstChild);
             return;
         }
@@ -73,10 +72,9 @@ const renderer = (() => {
         form.dataset.id = object.id;
         _changeButtonText("Apply changes");
         for (const child of Array.from(form.children).filter(child => child.tagName === "P")) {
-            const input = child.children[1];
-            input.value = object[input.id].replaceAll("/", "-");
+            const input = child.querySelector("input, textarea, select"); 
+            input.value = object[input.name].replaceAll("/", "-");
         }
-
         parent.replaceChild(form, ElementToReplace);
     };
 
@@ -87,15 +85,13 @@ const renderer = (() => {
 
         const iconImg = document.createElement("img");
         iconImg.src = projectIcon;
-        iconImg.alt = "Project"
+        iconImg.alt = "Project";
         iconImg.classList.add("icon");
 
-        const optionsImg = document.createElement("img");
-        optionsImg.src = optionsIcon;
-        optionsImg.alt = "Options";
-        optionsImg.classList.add("options");
+        const deleteButton = _buttonElement(deleteIcon, "Delete");
+        const editButton = _buttonElement(editIcon, "Edit");
 
-        projectEL.append(iconImg, name, optionsImg);
+        projectEL.append(iconImg, name, editButton, deleteButton);
         return projectEL;
     };
 

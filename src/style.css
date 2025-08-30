@@ -118,8 +118,7 @@ section + .category-header {
 
 .project {
     display: grid;
-    gap: 0.1rem;
-    grid-template-columns: 2rem auto 1.5rem;
+    grid-template-columns: 2rem auto 2rem 2rem;
     align-items: center;
     font-size: 1.2rem;
     font-weight: 525;

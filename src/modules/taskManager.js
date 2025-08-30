@@ -24,17 +24,22 @@ const ProjectManager = (() => {
 
     const removeProject = (projectId) => {
         removeFromArray(projectId, projects);
-    }
+    };
 
     const getActiveProject = () => {
         return activeProject;
     };
 
-    const setActiveProject = (project) => {
-        activeProject = project;
+    const editProject = (projectId, name) => {
+        const project = getProjectById(projectId);
+        project.name = name;
     };
 
-    return { getProjects, getProjectById, removeProject, addProject, getActiveProject, setActiveProject };
+    const setActiveProject = (projectId) => {
+        activeProject = projects.find(project => project.id === projectId);
+    };
+
+    return { editProject, getProjects, getProjectById, removeProject, addProject, getActiveProject, setActiveProject };
 
 })();
 
@@ -70,7 +75,7 @@ class Project {
     }
 
     editTask(taskId, {title, description, priority, dueDate}) {
-        const task = this.getTask(taskId)
+        const task = this.getTaskById(taskId);
         task.title = title;
         task.description = description;
         task.priority = priority;

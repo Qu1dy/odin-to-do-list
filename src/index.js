@@ -32,11 +32,11 @@ const main = (() => {
     const _renderWithEvents = () => {
         renderer.renderProjects(ProjectManager.getProjects());
         _handleEvents();
-    }
+    };
 
     const _addTemplateProject = () => {
         const templateProject = new Project("Project 1");
-        ProjectManager.setActiveProject(templateProject);
+        ProjectManager.setActiveProject(templateProject.id);
         renderer.renderProjects(ProjectManager.getProjects());
         const task = new Task({
             title: "meow",
@@ -60,14 +60,14 @@ const main = (() => {
             return;
         }
 
-        if (taskForm.style.display === "block") {
+        if (taskForm.style.display !== "none" || projectForm.style.display !== "none") {
             _renderWithEvents();
             return;
         }
-        if(projectForm.style.display === "flex") {
+        if (projectForm.style.display === "flex") {
             renderer.hideProjectForm();
         }
-    }
+    };
 
     const _handleKeyPresses = () => {
         closeDialogButton.addEventListener("click", renderer.closeExpandedTask);
@@ -80,50 +80,54 @@ const main = (() => {
         return task;
     };
 
+    const _getProject = (button) => {
+        const projectId = button.parentElement.dataset.id;
+        const project = ProjectManager.getProjectById(projectId);
+        return project;
+    };
+
     const _onTaskChangeState = (stateButton) => {
         const task = _getTask(stateButton);
         task.changeState();
     };
 
-    const _addEvent = (buttonsId, func, renderAfter = true) => {
-        const buttons = document.querySelectorAll(`.${buttonsId}`);
+    const _addEvent = (buttonsSelector, func, renderAfter = true) => {
+        const buttons = document.querySelectorAll(buttonsSelector);
         buttons.forEach(button => {
-            button.addEventListener("click", () => {
+            button.addEventListener("click", (e) => {
+                e.stopPropagation();
                 func(button);
                 if (!renderAfter) return;
+                console.log("meow");
                 _renderWithEvents();
             });
         });
     };
 
     const _onTaskFormSubmit = () => {
-        renderer.hideTaskForm();
-        const formData = new FormData(taskForm);
-        const dataJSON = Object.fromEntries(formData.entries());
+        const [data, taskId] = _onFormSubmit(taskForm, renderer.hideTaskForm);
         const activeProject = ProjectManager.getActiveProject();
-        const taskId = taskForm.dataset.id;
         if (taskId) {
-            activeProject.editTask(taskId, dataJSON);
+            activeProject.editTask(taskId, data);
         }
         else {
-            const task = new Task(dataJSON);
+            const task = new Task(data);
             activeProject.addTask(task);
         }
-        taskForm.reset();
     };
 
     const _handleEvents = () => {
-        _addEvent("delete", _onTaskDelete);
-        _addEvent("state", _onTaskChangeState);
-        _addEvent("edit", _onTaskEdit, false);
-        _addEvent("expand", _onTaskExpand, false);
-        _addEvent("project", _onProjectSelect);
+        _addEvent(".task .delete", _onTaskDelete);
+        _addEvent(".task .state", _onTaskChangeState);
+        _addEvent(".task .edit", _onTaskEdit, false);
+        _addEvent(".task .expand", _onTaskExpand, false);
+        _addEvent(".project", _onProjectSelect);
+        _addEvent(".project .edit", _onProjectEdit, false);
     };
 
     const _onProjectSelect = (projectButton) => {
         const projectId = projectButton.dataset.id;
-        const project = ProjectManager.getProjectById(projectId);
-        ProjectManager.setActiveProject(project);
+        ProjectManager.setActiveProject(projectId);
     };
 
     const _onTaskExpand = (expandButton) => {
@@ -131,18 +135,31 @@ const main = (() => {
         renderer.renderExpandedTask(task);
     };
 
+    const _onFormSubmit = (form, hideForm) => {
+        hideForm();
+        const formData = new FormData(form);
+        const dataJSON = Object.fromEntries(formData.entries());
+        const id = form.dataset.id;
+        return [dataJSON, id];
+    };
+
     const _onProjectFormSubmit = () => {
-        renderer.hideProjectForm();
-        const formData = new FormData(projectForm);
-        const projectName = formData.get("name");
-        new Project(projectName);
+        const [data, projectId] = _onFormSubmit(projectForm, renderer.hideProjectForm);
+        const name = data.name;
+        if(!projectId) {
+            new Project(name);
+        }
+        else {
+            ProjectManager.editProject(projectId, name);
+        }
         renderer.renderProjects(ProjectManager.getProjects());
     };
 
     const _handleForm = (button, renderFormEvent, form, onSubmitEvent) => {
         button.addEventListener("click", () => {
-            delete taskForm.datasetl;
+            delete form.dataset;
             renderFormEvent();
+            form.reset();
         });
 
         form.addEventListener("submit", (e) => {
@@ -150,7 +167,7 @@ const main = (() => {
             onSubmitEvent();
             _renderWithEvents();
         });
-    }
+    };
 
     const _handleProjectFormEvents = () => {
         _handleForm(createProjectButton, renderer.renderProjectForm, projectForm, _onProjectFormSubmit);
@@ -165,6 +182,13 @@ const main = (() => {
         const tasks = ProjectManager.getActiveProject().getTasks();
         const index = tasks.indexOf(task);
         renderer.renderTaskForm(index, task);
+    };
+
+    const _onProjectEdit = (editButton) => {
+        const project = _getProject(editButton);
+        const projects = ProjectManager.getProjects();
+        const index = projects.indexOf(project);
+        renderer.renderProjectForm(index, project);
     };
 
     return { init };
