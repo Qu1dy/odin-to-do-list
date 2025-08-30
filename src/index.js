@@ -4,7 +4,7 @@ import { Task, Project, ProjectManager } from "./modules/taskManager.js";
 import { format } from "date-fns";
 import storage from "./modules/localStorage.js";
 
-const main = (() => {
+const eventHandler = (() => {
     let createTaskButton, showOnlyCompleted, taskForm,
         closeDialogButton, expandedTaskDialog,
         projectForm, createProjectButton, showAllTasks,
@@ -32,8 +32,8 @@ const main = (() => {
             if(ProjectManager.getProjects().length === 1) {
                 ProjectManager.setActiveProject(project.id);
             }
+
             for(const taskData of projectData.tasks) {
-                console.log(taskData);
                 const task = new Task(taskData);
                 project.addTask(task);
             }
@@ -88,6 +88,7 @@ const main = (() => {
             _renderWithEvents();
             return;
         }
+
         if (projectForm.style.display === "flex") {
             renderer.hideProjectForm();
         }
@@ -236,4 +237,5 @@ const main = (() => {
 
     return { init };
 })();
-main.init();
+
+eventHandler.init();

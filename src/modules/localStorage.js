@@ -5,7 +5,7 @@ const storage = (() => {
 
     const getData = () => {
         return JSON.parse(localStorage.getItem("projects"));
-    }
+    };
 
     return {saveData, getData};
 })();
