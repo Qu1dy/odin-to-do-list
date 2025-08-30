@@ -4,7 +4,7 @@ A feature-rich task management application built as part of The Odin Project cur
 
 ## Demo
 
-Click [here](qu1dy.github.io/odin-to-do-list) to view the live application.
+Click [here](https://qu1dy.github.io/odin-to-do-list) to view the live application.
 
 ## Features
 
